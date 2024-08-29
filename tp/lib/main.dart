@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tp/accueil.dart';
+import 'package:tp/inscription.dart';
 
 void main() {
   runApp(const MyApp());
@@ -85,6 +87,39 @@ class _MyHomePageState extends State<MyHomePage> {
                     border: OutlineInputBorder(),
                     hintText: 'Password'
                 ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(40,10,40,10),
+              child: OutlinedButton(
+                  onPressed: (){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Inscription(
+
+                            )
+                        )
+                    );
+                  },
+                child: const Text("Connexion"),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(40,10,40,10),
+              child: OutlinedButton(
+                onPressed: (){
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Inscription(
+
+                          )
+                      )
+                  );
+                },
+                child: const Text("Inscription"),
+
               ),
             ),
           ],
