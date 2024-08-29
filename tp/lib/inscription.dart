@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tp/tiroir_nav.dart';
 
 // TODO Un ecran minimal avec un tres peu de code
 class Inscription extends StatefulWidget {
@@ -12,9 +13,11 @@ class _InscriptionState extends State<Inscription> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: LeTiroir(),
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: const Text('Inscription', style: TextStyle(color: Colors.white),),
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: Container(
         color: Colors.white,

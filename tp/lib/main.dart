@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tp/accueil.dart';
 import 'package:tp/inscription.dart';
+import 'package:tp/tiroir_nav.dart';
 
 void main() {
   runApp(const MyApp());
@@ -48,9 +48,11 @@ class _MyHomePageState extends State<MyHomePage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
+      drawer: const LeTiroir(),
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: Text('Connexion', style: TextStyle(color: Colors.white),),
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: Container(
         color: Colors.white,
