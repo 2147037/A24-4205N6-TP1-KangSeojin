@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:tp/consultation.dart';
+import 'package:tp/creation.dart';
 import 'package:tp/tiroir_nav.dart';
 
 // TODO Un ecran minimal avec un tres peu de code
@@ -38,12 +40,33 @@ class _AccueilState extends State<Accueil> {
               child: ListTile(
                 leading: Icon(Icons.task),
                 title: Text(item, style: TextStyle(color: Colors.black),),
-                trailing: IconButton(onPressed: (){}, icon: Icon(Icons.add)),
+                trailing: IconButton(onPressed: (){
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Consultation(
+                          )
+                      )
+                  );
+                },
+                    icon: Icon(Icons.info_outline_rounded)),
             )
           );
         }).toList(),
 
         ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: (){
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => Creation(
+                  )
+              )
+          );
+        },
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }
