@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tp/main.dart';
 import 'package:tp/tiroir_nav.dart';
 
 // TODO Un ecran minimal avec un tres peu de code
@@ -13,11 +14,9 @@ class _InscriptionState extends State<Inscription> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: LeTiroir(),
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: const Text('Inscription', style: TextStyle(color: Colors.white),),
-        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: Container(
         color: Colors.white,
@@ -73,13 +72,13 @@ class _InscriptionState extends State<Inscription> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => Inscription(
+                          builder: (context) => MyHomePage(title: '',
 
                           )
                       )
                   );
                 },
-                child: const Text("Connexion"),
+                child: const Text("Créer ton compte"),
               ),
             ),
           ],
