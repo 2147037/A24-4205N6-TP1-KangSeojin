@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tp/accueil.dart';
 import 'package:tp/inscription.dart';
 import 'package:tp/tiroir_nav.dart';
 
@@ -98,7 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => Inscription(
+                            builder: (context) => Accueil(
 
                             )
                         )
