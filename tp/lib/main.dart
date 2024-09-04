@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tp/accueil.dart';
 import 'package:tp/inscription.dart';
 import 'package:tp/tiroir_nav.dart';
+import 'package:dio/dio.dart';
 
 void main() {
   runApp(const MyApp());
@@ -38,6 +39,8 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _counter++;
     });
+
+
   }
 
   @override
