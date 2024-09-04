@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:tp/accueil.dart';
 import 'package:tp/inscription.dart';
+import 'package:tp/lib_http.dart';
 import 'package:tp/tiroir_nav.dart';
 import 'package:dio/dio.dart';
+import 'package:tp/transfer.dart';
 
 void main() {
   runApp(const MyApp());
@@ -33,6 +35,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final nomController = TextEditingController();
+  final pwController = TextEditingController();
   int _counter = 0;
 
   void _incrementCounter() {
@@ -78,6 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Padding(
               padding: const EdgeInsets.fromLTRB(20,10,20,10),
               child: TextField(
+                controller: nomController,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'Nom'
@@ -87,6 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
             Padding(
               padding: const EdgeInsets.fromLTRB(20,10,20,10),
               child: TextField(
+                controller: pwController,
                 obscureText: true,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -97,7 +103,15 @@ class _MyHomePageState extends State<MyHomePage> {
             Padding(
               padding: const EdgeInsets.fromLTRB(40,10,40,10),
               child: OutlinedButton(
-                  onPressed: (){
+                  onPressed: () async{
+                    try {
+                      SignupRequest request = SignupRequest(nomController.text, pwController.text);
+                      var reponse = await signin(request);
+                      print(reponse);
+                    } catch(e){
+                      print(e);
+                      throw(e);
+                    }
                     Navigator.push(
                         context,
                         MaterialPageRoute(
