@@ -1,11 +1,27 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:tp/transfer.dart';
+import 'package:dio_cookie_manager/dio_cookie_manager.dart';
+import 'package:cookie_jar/cookie_jar.dart';
+
+
+
+class SignletonDio{
+  static var cookieManager = CookieManager(CookieJar());
+
+  static Dio getDio() {
+    Dio dio = Dio();
+    dio.interceptors.add(cookieManager);
+    return dio;
+  }
+}
+
+
 
 Future<SignupResponse> signup(SignupRequest req) async {
 
   try {
-    var response = await Dio().post(
+    var response = await SignletonDio.getDio().post(
         'http://10.0.2.2:8080/api/id/signup',
       data: req.toJson()
     );
@@ -20,7 +36,7 @@ Future<SignupResponse> signup(SignupRequest req) async {
 Future<SignupResponse> signin(SignupRequest req) async {
 
   try {
-    var response = await Dio().post(
+    var response = await SignletonDio.getDio().post(
         'http://10.0.2.2:8080/api/id/signin',
         data: req.toJson()
     );
@@ -33,10 +49,10 @@ Future<SignupResponse> signin(SignupRequest req) async {
 
 }
 
-Future<List<HomeItemResponse>> home(SignupRequest req) async {
+Future<List<HomeItemResponse>> home() async {
 
   try {
-    var response = await Dio().get('http://10.0.2.2:8080/api/home');
+    var response = await SignletonDio.getDio().get('http://10.0.2.2:8080/api/home');
     //Instancier liste
     List<HomeItemResponse> homeItems = [];
 
