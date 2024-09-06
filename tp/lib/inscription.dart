@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:tp/accueil.dart';
 import 'package:tp/lib_http.dart';
 import 'package:tp/main.dart';
 import 'package:tp/tiroir_nav.dart';
@@ -91,7 +92,7 @@ class _InscriptionState extends State<Inscription> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => MyHomePage(title: '',
+                          builder: (context) => Accueil(
 
                           )
                       )

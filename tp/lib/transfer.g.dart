@@ -27,3 +27,21 @@ Map<String, dynamic> _$SignupResponseToJson(SignupResponse instance) =>
     <String, dynamic>{
       'username': instance.username,
     };
+
+HomeItemResponse _$HomeItemResponseFromJson(Map<String, dynamic> json) =>
+    HomeItemResponse(
+      (json['id'] as num).toInt(),
+      json['name'] as String,
+      (json['percentageDone'] as num).toInt(),
+      (json['percentageTimeSpent'] as num).toDouble(),
+      DateTime.parse(json['deadline'] as String),
+    );
+
+Map<String, dynamic> _$HomeItemResponseToJson(HomeItemResponse instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'percentageDone': instance.percentageDone,
+      'percentageTimeSpent': instance.percentageTimeSpent,
+      'deadline': instance.deadline.toIso8601String(),
+    };
