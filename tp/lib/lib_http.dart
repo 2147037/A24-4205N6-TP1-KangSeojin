@@ -33,15 +33,26 @@ Future<SignupResponse> signin(SignupRequest req) async {
 
 }
 
-Future<SignupResponse> home(SignupRequest req) async {
+Future<List<HomeItemResponse>> home(SignupRequest req) async {
 
   try {
-    var response = await Dio().post(
-        'http://10.0.2.2:8080/api/id/signin',
-        data: req.toJson()
-    );
+    var response = await Dio().get('http://10.0.2.2:8080/api/home');
+    //Instancier liste
+    List<HomeItemResponse> homeItems = [];
+
+    //Avoir objet sous forme liste JSON
+    var listeJson = response.data as List;
+
+    // Changer en HomeItemResponse
+    var listeHomeItems = listeJson.map(
+            (elementJSON) {
+          return HomeItemResponse.fromJson(elementJSON);
+        }
+    ).toList();
+
+    homeItems = listeHomeItems;
     print(response);
-    return SignupResponse.fromJson(response.data);
+    return homeItems;
   }catch(e){
     print(e);
     throw(e);
