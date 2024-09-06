@@ -58,9 +58,20 @@ class _AccueilState extends State<Accueil> {
             color: Colors.cyan,
               child: ListTile(
                 leading: Icon(Icons.task),
-                title: Text(item.name, style: TextStyle(color: Colors.black)
-                  ,),
+                title: Row(
+                  children: <Widget>[
+                    Container(
+                      child: Text(item.name +"\nDeadline : "+
+                                  item.deadline.toString() +"\nPercentage Done : " +
+                                  item.percentageDone.toString() +"\nPercentage Time Spent : " +
+                                  item.percentageTimeSpent.toString(),style: TextStyle(fontSize: 15),) ,
+                    ),
 
+                  ],
+                ),
+
+                
+                
                 trailing: IconButton(onPressed: (){
                   Navigator.push(
                       context,
