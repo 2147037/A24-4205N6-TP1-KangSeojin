@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:tp/accueil.dart';
 import 'package:tp/inscription.dart';
+import 'package:tp/lib_http.dart';
 import 'package:tp/tiroir_nav.dart';
+import 'package:tp/transfer.dart';
 
 // TODO Un ecran minimal avec un tres peu de code
 class Creation extends StatefulWidget {
@@ -13,7 +15,8 @@ class Creation extends StatefulWidget {
 }
 
 class _CreationState extends State<Creation> {
-  TextEditingController dateController = TextEditingController();
+  final TextEditingController dateController = TextEditingController();
+  final nomController = TextEditingController();
 
 
   @override
@@ -38,6 +41,7 @@ class _CreationState extends State<Creation> {
             Padding(
               padding: const EdgeInsets.fromLTRB(20,10,20,10),
               child: TextField(
+                controller: nomController,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: 'Nom'
@@ -48,7 +52,6 @@ class _CreationState extends State<Creation> {
               padding: const EdgeInsets.fromLTRB(25,10,25,10),
               child: TextField(
                 controller: dateController,
-                obscureText: true,
                 decoration: InputDecoration(
                     icon: Icon(Icons.calendar_today),
                     labelText: "Entrer la date",
@@ -61,7 +64,7 @@ class _CreationState extends State<Creation> {
                       lastDate: DateTime(2100)
                   );
                       if(pickedDate!= null){
-                        String formattedDate = DateFormat("yyyy-MM--dd").format(pickedDate);
+                        String formattedDate = DateFormat("yyyy-MM-dd").format(pickedDate);
 
                         setState(() {
                           dateController.text= formattedDate.toString();
@@ -77,7 +80,15 @@ class _CreationState extends State<Creation> {
             Padding(
               padding: const EdgeInsets.fromLTRB(40,10,40,10),
               child: OutlinedButton(
-                onPressed: (){
+                onPressed: ()async{
+                  try {
+                    AddTaskRequest request = AddTaskRequest(nomController.text, DateTime.parse(dateController.text));
+                    var reponse = await add(request);
+                    print(reponse);
+                  } catch(e){
+                    print(e);
+                    throw(e);
+                  }
                   Navigator.push(
                       context,
                       MaterialPageRoute(

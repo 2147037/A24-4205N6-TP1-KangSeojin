@@ -76,3 +76,20 @@ Future<List<HomeItemResponse>> home() async {
 
 }
 
+
+Future<String> add(AddTaskRequest req) async {
+
+  try {
+    var response = await SignletonDio.getDio().post(
+        'http://10.0.2.2:8080/api/add',
+        data: req.toJson()
+    );
+    print(response);
+    return response.data.toString();
+  }catch(e){
+    print(e);
+    throw(e);
+  }
+
+}
+

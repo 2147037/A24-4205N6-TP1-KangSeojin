@@ -24,6 +24,7 @@ class _AccueilState extends State<Accueil> {
       home().then((reponse) {
         print(reponse);
         items = reponse;
+        setState(() {});
       },);
 
 
