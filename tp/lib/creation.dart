@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:tp/accueil.dart';
 import 'package:tp/inscription.dart';
 import 'package:tp/tiroir_nav.dart';
@@ -12,6 +13,9 @@ class Creation extends StatefulWidget {
 }
 
 class _CreationState extends State<Creation> {
+  TextEditingController dateController = TextEditingController();
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,13 +45,32 @@ class _CreationState extends State<Creation> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(20,10,20,10),
+              padding: const EdgeInsets.fromLTRB(25,10,25,10),
               child: TextField(
+                controller: dateController,
                 obscureText: true,
                 decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Date'
+                    icon: Icon(Icons.calendar_today),
+                    labelText: "Entrer la date",
                 ),
+              readOnly: true,
+                onTap: () async{
+                      DateTime? pickedDate = await showDatePicker(context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(2024),
+                      lastDate: DateTime(2100)
+                  );
+                      if(pickedDate!= null){
+                        String formattedDate = DateFormat("yyyy-MM--dd").format(pickedDate);
+
+                        setState(() {
+                          dateController.text= formattedDate.toString();
+                        });
+                      }
+                      else{
+
+                      }
+                },
               ),
             ),
 
