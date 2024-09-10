@@ -64,8 +64,8 @@ class _AccueilState extends State<Accueil> {
                     Container(
                       child: Text(item.name +"\nDeadline : "+
                                   item.deadline.toString() +"\nPercentage Done : " +
-                                  item.percentageDone.toString() +"\nPercentage Time Spent : " +
-                                  item.percentageTimeSpent.toString(),style: TextStyle(fontSize: 15),) ,
+                                  item.percentageDone.toString() +"%\nPercentage Time Spent : " +
+                                  item.percentageTimeSpent.toString() + "%",style: TextStyle(fontSize: 15),) ,
                     ),
 
                   ],
@@ -73,14 +73,26 @@ class _AccueilState extends State<Accueil> {
 
                 
                 
-                trailing: IconButton(onPressed: (){
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => Consultation(
-                          )
-                      )
-                  );
+                trailing: IconButton(onPressed: () async{
+                  try {
+
+                    var reponse = await detail(item.id);
+                    print(reponse);
+                    TaskDetailResponse taskDetailResponse = reponse;
+                    print(taskDetailResponse);
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Consultation(
+                                tdr: taskDetailResponse
+                            )
+                        )
+                    );
+                  } catch(e){
+                    print(e);
+                    throw(e);
+                  }
+
                 },
                     icon: Icon(Icons.info_outline_rounded)),
             ),

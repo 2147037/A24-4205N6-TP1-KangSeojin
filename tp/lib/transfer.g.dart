@@ -57,3 +57,21 @@ Map<String, dynamic> _$AddTaskRequestToJson(AddTaskRequest instance) =>
       'name': instance.name,
       'deadline': instance.deadline.toIso8601String(),
     };
+
+TaskDetailResponse _$TaskDetailResponseFromJson(Map<String, dynamic> json) =>
+    TaskDetailResponse(
+      (json['id'] as num).toInt(),
+      json['name'] as String,
+      (json['percentageDone'] as num).toInt(),
+      (json['percentageTimeSpent'] as num).toDouble(),
+      DateTime.parse(json['deadline'] as String),
+    );
+
+Map<String, dynamic> _$TaskDetailResponseToJson(TaskDetailResponse instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'name': instance.name,
+      'deadline': instance.deadline.toIso8601String(),
+      'percentageDone': instance.percentageDone,
+      'percentageTimeSpent': instance.percentageTimeSpent,
+    };

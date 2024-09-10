@@ -80,3 +80,25 @@ class AddTaskRequest {
   /// helper method `_$UserToJson`.
   Map<String, dynamic> toJson() => _$AddTaskRequestToJson(this);
 }
+
+@JsonSerializable()
+class TaskDetailResponse {
+  TaskDetailResponse(this.id, this.name ,this.percentageDone, this.percentageTimeSpent, this.deadline);
+
+  int id;
+  String name;
+  DateTime deadline;
+  int percentageDone;
+  double percentageTimeSpent;
+
+
+  /// A necessary factory constructor for creating a new User instance
+  /// from a map. Pass the map to the generated `_$UserFromJson()` constructor.
+  /// The constructor is named after the source class, in this case, User.
+  factory TaskDetailResponse.fromJson(Map<String, dynamic> json) => _$TaskDetailResponseFromJson(json);
+
+  /// `toJson` is the convention for a class to declare support for serialization
+  /// to JSON. The implementation simply calls the private, generated
+  /// helper method `_$UserToJson`.
+  Map<String, dynamic> toJson() => _$TaskDetailResponseToJson(this);
+}

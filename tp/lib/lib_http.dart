@@ -93,3 +93,31 @@ Future<String> add(AddTaskRequest req) async {
 
 }
 
+Future<TaskDetailResponse> detail(int id) async {
+
+  try {
+    var response = await SignletonDio.getDio().get('http://10.0.2.2:8080/api/detail/' + id.toString());
+
+    return TaskDetailResponse.fromJson(response.data);
+  }catch(e){
+    print(e);
+    throw(e);
+  }
+
+}
+
+Future<String> updateProgress(int id, int valeur) async {
+
+  int value = valeur.toInt();
+
+  try {
+    var response = await SignletonDio.getDio().get('http://10.0.2.2:8080/api/progress/' + id.toString() + '/' + value.toString());
+
+    return response.data.toString();
+  }catch(e){
+    print(e);
+    throw(e);
+  }
+
+}
+
