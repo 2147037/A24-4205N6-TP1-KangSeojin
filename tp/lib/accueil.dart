@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:tp/consultation.dart';
 import 'package:tp/creation.dart';
 import 'package:tp/lib_http.dart';
@@ -27,24 +28,15 @@ class _AccueilState extends State<Accueil> {
         items = reponse;
         setState(() {});
       },);
-
-
     } catch(e){
       print(e);
       throw(e);
     }
-
-
     setState(() {
 
     });
     super.initState();
-
-
   }
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,17 +48,22 @@ class _AccueilState extends State<Accueil> {
       ),
       body: ListView(
         children: items.map((item) {
+          String formattedDate = DateFormat("yyyy-MM-dd").format(item.deadline);
+
           return Card(
             color: Colors.cyan,
               child: ListTile(
                 leading: Icon(Icons.task),
                 title: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    Container(
-                      child: Text(item.name +"\nDeadline : "+
-                                  item.deadline.toString() +"\nPercentage Done : " +
-                                  item.percentageTimeSpent.toString() + "%",style: TextStyle(fontSize: 15),) ,
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(10,0,0,5),
+                      child: Container(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          item.name +"\nDeadline : " + formattedDate ,style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.left,) ,
+                      ),
                     ),
                     LinearPercentIndicator(
                       animation: true,
@@ -81,6 +78,9 @@ class _AccueilState extends State<Accueil> {
                               color: Colors.black
                           )
                       ),
+                    ),
+                    Container(
+                      height: 6,
                     ),
                     LinearPercentIndicator(
                       animation: true,
