@@ -8,7 +8,8 @@ import 'package:tp/transfer.dart';
 
 // TODO Un ecran minimal avec un tres peu de code
 class Creation extends StatefulWidget {
-  const Creation({super.key});
+  const Creation({super.key, required this.Name});
+  final String Name;
 
   @override
   State<Creation> createState() => _CreationState();
@@ -22,7 +23,7 @@ class _CreationState extends State<Creation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: LeTiroir(),
+      drawer: LeTiroir(username: widget.Name  ,),
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: const Text('Création', style: TextStyle(color: Colors.white),),
@@ -92,7 +93,7 @@ class _CreationState extends State<Creation> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => Accueil(
+                          builder: (context) => Accueil(Name: widget.Name,
 
                           )
                       )

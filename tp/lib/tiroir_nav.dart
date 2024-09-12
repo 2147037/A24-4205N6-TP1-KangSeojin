@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:tp/accueil.dart';
+import 'package:tp/creation.dart';
 import 'package:tp/inscription.dart';
+import 'package:tp/lib_http.dart';
 import 'package:tp/main.dart';
 
 
 class LeTiroir extends StatefulWidget {
-  const LeTiroir({super.key});
+  const LeTiroir({super.key, required this.username });
+
+  final String username;
 
   @override
   State<LeTiroir> createState() => LeTiroirState();
@@ -28,38 +33,58 @@ class LeTiroirState extends State<LeTiroir> {
             ),
           ),
         ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(10, 0,10,0),
+          child: Text('Bonjour ' + widget.username + '!', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+        ),
         ListTile(
           dense: true,
-          leading: const Icon(Icons.account_circle_outlined),
-          title: const Text("Connexion"),
+          leading: const Icon(Icons.home_filled),
+          title: const Text("Accueil"),
           onTap: () {
-            // TODO ferme le tiroir de navigation
             Navigator.of(context).pop();
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const MyHomePage(title: "title"),
+                builder: (context) => Accueil(Name  : widget.username),
               ),
             );
-            // Then close the drawer
           },
         ),
 
-        // TODO le tiroir de navigation ne peut pointer que vers des
-        // ecran sans paramtre.
         ListTile(
           dense: true,
-          leading: const Icon(Icons.account_circle),
-          title: const Text("Inscription"),
+          leading: const Icon(Icons.add),
+          title: const Text("Ajout de tâche"),
           onTap: () {
             Navigator.of(context).pop();
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const Inscription(),
+                builder: (context) => Creation(Name: widget.username,),
               ),
             );
-            // Then close the drawer
+          },
+        ),
+        ListTile(
+          dense: true,
+          leading: const Icon(Icons.logout),
+          title: const Text("Déconnexion"),
+          onTap: () async{
+            try {
+              var reponse = await signout();
+              print(reponse);
+              Navigator.of(context).pop();
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const MyHomePage(title: "title"),
+                  ),
+              );
+            } catch(e){
+              print(e);
+              throw(e);
+            }
           },
         ),
       ],

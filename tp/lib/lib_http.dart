@@ -49,6 +49,21 @@ Future<SignupResponse> signin(SignupRequest req) async {
 
 }
 
+Future<String> signout() async {
+
+  try {
+    var response = await SignletonDio.getDio().post(
+        'http://10.0.2.2:8080/api/id/signout',
+    );
+    print(response);
+    return response.data.toString();
+  }catch(e){
+    print(e);
+    throw(e);
+  }
+
+}
+
 Future<List<HomeItemResponse>> home() async {
 
   try {

@@ -7,9 +7,10 @@ import 'package:percent_indicator/percent_indicator.dart';
 
 // TODO Un ecran minimal avec un tres peu de code
 class Consultation extends StatefulWidget {
-  const Consultation({super.key,  required this.tdr  });
+  const Consultation({super.key,  required this.tdr,  required this.Name });
 
   final TaskDetailResponse tdr;
+  final String Name;
 
   @override
   State<Consultation> createState() => _ConsultationState();
@@ -20,8 +21,9 @@ class _ConsultationState extends State<Consultation> {
 
   @override
   Widget build(BuildContext context) {
+    progressController.text = widget.tdr.percentageDone.toString();
     return Scaffold(
-      drawer: LeTiroir(),
+      drawer: LeTiroir(username:  widget.Name),
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: const Text('Consultation', style: TextStyle(color: Colors.white),),
@@ -98,8 +100,7 @@ class _ConsultationState extends State<Consultation> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => Accueil(
-
+                            builder: (context) => Accueil(Name: widget.Name,
                             )
                         )
                     );

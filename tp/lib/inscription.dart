@@ -92,7 +92,7 @@ class _InscriptionState extends State<Inscription> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => Accueil(
+                          builder: (context) => Accueil( Name: nomController.text,
 
                           )
                       )
