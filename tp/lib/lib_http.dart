@@ -8,7 +8,7 @@ import 'package:cookie_jar/cookie_jar.dart';
 
 class SignletonDio{
   static var cookieManager = CookieManager(CookieJar());
-
+  static String username= "";
   static Dio getDio() {
     Dio dio = Dio();
     dio.interceptors.add(cookieManager);
@@ -25,6 +25,7 @@ Future<SignupResponse> signup(SignupRequest req) async {
         'http://10.0.2.2:8080/api/id/signup',
       data: req.toJson()
     );
+    SignletonDio.username = req.username;
     print(response);
     return SignupResponse.fromJson(response.data);
   }catch(e){
@@ -40,6 +41,7 @@ Future<SignupResponse> signin(SignupRequest req) async {
         'http://10.0.2.2:8080/api/id/signin',
         data: req.toJson()
     );
+    SignletonDio.username = req.username;
     print(response);
     return SignupResponse.fromJson(response.data);
   }catch(e){

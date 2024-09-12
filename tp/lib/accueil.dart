@@ -7,8 +7,7 @@ import 'package:tp/transfer.dart';
 
 // TODO Un ecran minimal avec un tres peu de code
 class Accueil extends StatefulWidget {
-  const Accueil({super.key,required this.Name});
-  final String Name;
+  const Accueil({super.key});
 
   @override
   State<Accueil> createState() => _AccueilState();
@@ -48,7 +47,7 @@ class _AccueilState extends State<Accueil> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: LeTiroir(username:  this.widget.Name),
+      drawer: LeTiroir(username:  SignletonDio.username),
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: const Text('Accueil', style: TextStyle(color: Colors.white),),
@@ -84,7 +83,7 @@ class _AccueilState extends State<Accueil> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => Consultation( Name: widget.Name,
+                            builder: (context) => Consultation(
                                 tdr: taskDetailResponse
                             )
                         )
@@ -107,7 +106,7 @@ class _AccueilState extends State<Accueil> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => Creation(Name : widget.Name,
+                  builder: (context) => Creation(
                   )
               )
           );

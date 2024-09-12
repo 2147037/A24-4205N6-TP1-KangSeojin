@@ -7,10 +7,9 @@ import 'package:percent_indicator/percent_indicator.dart';
 
 // TODO Un ecran minimal avec un tres peu de code
 class Consultation extends StatefulWidget {
-  const Consultation({super.key,  required this.tdr,  required this.Name });
+  const Consultation({super.key,  required this.tdr});
 
   final TaskDetailResponse tdr;
-  final String Name;
 
   @override
   State<Consultation> createState() => _ConsultationState();
@@ -23,7 +22,7 @@ class _ConsultationState extends State<Consultation> {
   Widget build(BuildContext context) {
     progressController.text = widget.tdr.percentageDone.toString();
     return Scaffold(
-      drawer: LeTiroir(username:  widget.Name),
+      drawer: LeTiroir(username:  SignletonDio.username),
       appBar: AppBar(
         backgroundColor: Colors.black,
         title: const Text('Consultation', style: TextStyle(color: Colors.white),),
@@ -43,6 +42,7 @@ class _ConsultationState extends State<Consultation> {
             Padding(
               padding: const EdgeInsets.fromLTRB(20,10,20,10),
               child: TextField(
+                readOnly: true,
                 controller: TextEditingController(text: widget.tdr.name),
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -53,11 +53,23 @@ class _ConsultationState extends State<Consultation> {
             Padding(
               padding: const EdgeInsets.fromLTRB(20,10,20,10),
               child: TextField(
+                readOnly: true,
+                controller: TextEditingController(text: widget.tdr.deadline.toString()),
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Deadline'
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20,10,20,10),
+              child: TextField(
                 // controller: TextEditingController(text: widget.tdr.percentageDone.toString() + "%"),
                 controller: progressController,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    hintText: widget.tdr.percentageDone.toString() + "%"
+                    hintText: widget.tdr.percentageDone.toString() + "%",
+                    labelText: 'Percentage Done'
                 ),
               ),
             ),
@@ -100,7 +112,7 @@ class _ConsultationState extends State<Consultation> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => Accueil(Name: widget.Name,
+                            builder: (context) => Accueil(
                             )
                         )
                     );

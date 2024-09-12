@@ -46,7 +46,7 @@ class LeTiroirState extends State<LeTiroir> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => Accueil(Name  : widget.username),
+                builder: (context) => Accueil(),
               ),
             );
           },
@@ -61,7 +61,7 @@ class LeTiroirState extends State<LeTiroir> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => Creation(Name: widget.username,),
+                builder: (context) => Creation(),
               ),
             );
           },

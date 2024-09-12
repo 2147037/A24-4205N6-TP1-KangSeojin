@@ -84,6 +84,9 @@ class _InscriptionState extends State<Inscription> {
                   try {
                     SignupRequest request = SignupRequest(nomController.text, pwController.text);
                     var reponse = await signup(request);
+
+
+
                     print(reponse);
                   } catch(e){
                     print(e);
@@ -92,7 +95,7 @@ class _InscriptionState extends State<Inscription> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => Accueil( Name: nomController.text,
+                          builder: (context) => Accueil(
 
                           )
                       )
