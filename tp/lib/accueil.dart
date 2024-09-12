@@ -4,6 +4,7 @@ import 'package:tp/creation.dart';
 import 'package:tp/lib_http.dart';
 import 'package:tp/tiroir_nav.dart';
 import 'package:tp/transfer.dart';
+import 'package:percent_indicator/percent_indicator.dart';
 
 // TODO Un ecran minimal avec un tres peu de code
 class Accueil extends StatefulWidget {
@@ -59,20 +60,44 @@ class _AccueilState extends State<Accueil> {
             color: Colors.cyan,
               child: ListTile(
                 leading: Icon(Icons.task),
-                title: Row(
+                title: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     Container(
                       child: Text(item.name +"\nDeadline : "+
                                   item.deadline.toString() +"\nPercentage Done : " +
-                                  item.percentageDone.toString() +"%\nPercentage Time Spent : " +
                                   item.percentageTimeSpent.toString() + "%",style: TextStyle(fontSize: 15),) ,
                     ),
-
+                    LinearPercentIndicator(
+                      animation: true,
+                      animationDuration: 1000,
+                      lineHeight: 20.0,
+                      percent: item.percentageDone/100,
+                      center: Text(
+                          "Percentage Done - " +item.percentageDone.toString() + "%",
+                          style: TextStyle(
+                              fontSize: 10.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black
+                          )
+                      ),
+                    ),
+                    LinearPercentIndicator(
+                      animation: true,
+                      animationDuration: 1000,
+                      lineHeight: 20.0,
+                      percent: item.percentageTimeSpent/100,
+                      center: Text(
+                          "Percentage Time Spent - " +item.percentageTimeSpent.toString() + "%",
+                          style: TextStyle(
+                              fontSize: 10.0,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black
+                          )
+                      ),
+                    ),
                   ],
                 ),
-
-                
-                
                 trailing: IconButton(onPressed: () async{
                   try {
 
