@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:tp/accueil.dart';
-import 'package:tp/creation.dart';
-import 'package:tp/inscription.dart';
-import 'package:tp/lib_http.dart';
 import 'package:tp/main.dart';
+
+import '../pages/accueil.dart';
+import '../pages/creation.dart';
+import '../services/lib_http.dart';
 
 
 class LeTiroir extends StatefulWidget {

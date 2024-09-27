@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:tp/accueil.dart';
-import 'package:tp/inscription.dart';
-import 'package:tp/lib_http.dart';
-import 'package:tp/tiroir_nav.dart';
 import 'package:dio/dio.dart';
-import 'package:tp/transfer.dart';
+import 'package:tp/pages/accueil.dart';
+import 'package:tp/pages/inscription.dart';
+import 'package:tp/services/lib_http.dart';
+
+import 'models/transfer.dart';
 
 void main() {
   runApp(const MyApp());

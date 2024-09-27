@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:tp/consultation.dart';
-import 'package:tp/creation.dart';
-import 'package:tp/lib_http.dart';
-import 'package:tp/tiroir_nav.dart';
-import 'package:tp/transfer.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+
+import '../models/transfer.dart';
+import '../services/lib_http.dart';
+import '../widgets/tiroir_nav.dart';
+import 'consultation.dart';
+import 'creation.dart';
 
 // TODO Un ecran minimal avec un tres peu de code
 class Accueil extends StatefulWidget {
@@ -37,6 +38,7 @@ class _AccueilState extends State<Accueil> {
     });
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

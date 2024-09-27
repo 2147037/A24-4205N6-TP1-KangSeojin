@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:tp/accueil.dart';
-import 'package:tp/inscription.dart';
-import 'package:tp/lib_http.dart';
-import 'package:tp/tiroir_nav.dart';
-import 'package:tp/transfer.dart';
+
+import '../models/transfer.dart';
+import '../services/lib_http.dart';
+import '../widgets/tiroir_nav.dart';
+import 'accueil.dart';
 
 // TODO Un ecran minimal avec un tres peu de code
 class Creation extends StatefulWidget {
