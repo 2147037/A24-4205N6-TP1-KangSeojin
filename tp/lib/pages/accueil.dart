@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
+import '../generated/l10n.dart';
 import '../models/transfer.dart';
 import '../services/lib_http.dart';
 import '../widgets/tiroir_nav.dart';
@@ -45,7 +46,7 @@ class _AccueilState extends State<Accueil> {
       drawer: LeTiroir(username:  SignletonDio.username),
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: const Text('Accueil', style: TextStyle(color: Colors.white),),
+        title:  Text(S.of(context).accueil, style: TextStyle(color: Colors.white),),
         iconTheme: IconThemeData(color: Colors.white),
       ),
       body: ListView(
@@ -63,7 +64,7 @@ class _AccueilState extends State<Accueil> {
                       child: Container(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          item.name +"\nDeadline : " + formattedDate ,style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                          item.name +"\n"+S.of(context).deadline +" : "+ formattedDate ,style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                         textAlign: TextAlign.left,) ,
                       ),
                     ),
@@ -73,7 +74,7 @@ class _AccueilState extends State<Accueil> {
                       lineHeight: 20.0,
                       percent: item.percentageDone/100,
                       center: Text(
-                          "Percentage Done - " +item.percentageDone.toString() + "%",
+                          S.of(context).percentageDone + " - " +item.percentageDone.toString() + "%",
                           style: TextStyle(
                               fontSize: 10.0,
                               fontWeight: FontWeight.bold,
@@ -90,7 +91,7 @@ class _AccueilState extends State<Accueil> {
                       lineHeight: 20.0,
                       percent: item.percentageTimeSpent/100,
                       center: Text(
-                          "Percentage Time Spent - " +item.percentageTimeSpent.toString() + "%",
+                          S.of(context).percentageTimeSpent + " - " +item.percentageTimeSpent.toString() + "%",
                           style: TextStyle(
                               fontSize: 10.0,
                               fontWeight: FontWeight.bold,

@@ -4,27 +4,33 @@ import '../generated/l10n.dart';
 import '../models/transfer.dart';
 import '../services/lib_http.dart';
 import 'accueil.dart';
-
-// TODO Un ecran minimal avec un tres peu de code
-class Inscription extends StatefulWidget {
-  const Inscription({super.key});
+import 'inscription.dart';
 
 
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key, required this.title});
+  final String title;
   @override
-  State<Inscription> createState() => _InscriptionState();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _InscriptionState extends State<Inscription> {
+class _MyHomePageState extends State<MyHomePage> {
   final nomController = TextEditingController();
   final pwController = TextEditingController();
-  final confPwController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    // This method is rerun every time setState is called, for instance as done
+    // by the _incrementCounter method above.
+    //
+    // The Flutter framework has been optimized to make rerunning build methods
+    // fast, so that you can just rebuild anything that needs updating rather
+    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: Text(S.of(context).inscription, style: const TextStyle(color: Colors.white),),
+        title: Text(S.of(context).connexion, style: TextStyle(color: Colors.white),),
+        iconTheme: IconThemeData(color: Colors.white),
       ),
       body: Container(
         color: Colors.white,
@@ -66,26 +72,12 @@ class _InscriptionState extends State<Inscription> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.fromLTRB(20,10,20,10),
-              child: TextField(
-                controller: confPwController,
-                obscureText: true,
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: S.of(context).confirmPassword
-                ),
-              ),
-            ),
-            Padding(
               padding: const EdgeInsets.fromLTRB(40,10,40,10),
               child: OutlinedButton(
-                onPressed: () async {
+                onPressed: () async{
                   try {
                     SignupRequest request = SignupRequest(nomController.text, pwController.text);
-                    var reponse = await signup(request);
-
-
-
+                    var reponse = await signin(request);
                     print(reponse);
                   } catch(e){
                     print(e);
@@ -94,13 +86,28 @@ class _InscriptionState extends State<Inscription> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => Accueil(
+                          builder: (context) => Accueil( )
+                      )
+                  );
+                },
+                child: Text(S.of(context).connexion),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(40,10,40,10),
+              child: OutlinedButton(
+                onPressed: (){
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Inscription(
 
                           )
                       )
                   );
                 },
-                child: Text(S.of(context).crerTonCompte),
+                child: Text(S.of(context).inscription),
+
               ),
             ),
           ],

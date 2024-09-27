@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../generated/l10n.dart';
 import '../models/transfer.dart';
 import '../services/lib_http.dart';
 import '../widgets/tiroir_nav.dart';
@@ -25,7 +26,7 @@ class _CreationState extends State<Creation> {
       drawer: LeTiroir(username: SignletonDio.username),
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: const Text('Création', style: TextStyle(color: Colors.white),),
+        title:  Text(S.of(context).creation, style: TextStyle(color: Colors.white),),
         iconTheme: IconThemeData(color: Colors.white),
       ),
       body: Container(
@@ -34,7 +35,7 @@ class _CreationState extends State<Creation> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.fromLTRB(0,150,0,40),
-              child: Text('Création', style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+              child: Text(S.of(context).creation, style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -44,7 +45,7 @@ class _CreationState extends State<Creation> {
                 controller: nomController,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    hintText: 'Nom'
+                    hintText: S.of(context).nom
                 ),
               ),
             ),
@@ -54,7 +55,7 @@ class _CreationState extends State<Creation> {
                 controller: dateController,
                 decoration: InputDecoration(
                     icon: Icon(Icons.calendar_today),
-                    labelText: "Entrer la date",
+                    labelText: S.of(context).dateInput,
                 ),
               readOnly: true,
                 onTap: () async{
@@ -97,7 +98,7 @@ class _CreationState extends State<Creation> {
                       )
                   );
                 },
-                child: const Text("Créer"),
+                child: Text(S.of(context).create),
               ),
             ),
           ],

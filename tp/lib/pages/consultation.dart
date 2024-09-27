@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
+import '../generated/l10n.dart';
 import '../models/transfer.dart';
 import '../services/lib_http.dart';
 import '../widgets/tiroir_nav.dart';
@@ -26,7 +27,7 @@ class _ConsultationState extends State<Consultation> {
       drawer: LeTiroir(username:  SignletonDio.username),
       appBar: AppBar(
         backgroundColor: Colors.black,
-        title: const Text('Consultation', style: TextStyle(color: Colors.white),),
+        title:  Text(S.of(context).consultation, style: TextStyle(color: Colors.white),),
         iconTheme: IconThemeData(color: Colors.white),
       ),
       body: Container(
@@ -36,7 +37,7 @@ class _ConsultationState extends State<Consultation> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.fromLTRB(0,150,0,40),
-              child: Text('Détails', style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+              child: Text(S.of(context).details, style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -47,7 +48,7 @@ class _ConsultationState extends State<Consultation> {
                 controller: TextEditingController(text: widget.tdr.name),
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Nom'
+                    labelText: S.of(context).nom
                 ),
               ),
             ),
@@ -58,7 +59,7 @@ class _ConsultationState extends State<Consultation> {
                 controller: TextEditingController(text: widget.tdr.deadline.toString()),
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Deadline'
+                    labelText: S.of(context).deadline
                 ),
               ),
             ),
@@ -70,14 +71,14 @@ class _ConsultationState extends State<Consultation> {
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
                     hintText: widget.tdr.percentageDone.toString() + "%",
-                    labelText: 'Percentage Done'
+                    labelText: S.of(context).percentageDone
                 ),
               ),
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(20,10,20,0),
               child: Text(
-                "Percentage Time Spent",
+                S.of(context).percentageTimeSpent,
                 style:TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 15.0
@@ -123,7 +124,7 @@ class _ConsultationState extends State<Consultation> {
                   }
 
                 },
-                child: const Text("Modifier"),
+                child: Text(S.of(context).modifier),
 
               ),
             ),

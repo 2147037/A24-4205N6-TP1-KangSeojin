@@ -1,0 +1,18 @@
+{
+  "inscription": "Inscription",
+  "nom": "Nom",
+  "password": "Mot de passe",
+  "confirmPassword": "Confirmer ton  mot de passe",
+  "crerTonCompte": "Créer ton compte",
+  "connexion": "Connexion",
+  "creation": "Création",
+  "dateInput": "Entrer la date",
+  "create": "Créer",
+  "consultation": "Consultation",
+  "details": "Détails",
+  "deadline": "Date limite ",
+  "percentageDone": "Pourcentage réalisé",
+  "percentageTimeSpent": "Pourcentage de temps passé",
+  "modifier": "Modifier",
+  "accueil": "Accueil"
+}

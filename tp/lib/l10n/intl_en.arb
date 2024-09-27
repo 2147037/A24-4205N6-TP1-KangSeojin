@@ -1,0 +1,17 @@
+{"inscription": "Register",
+  "nom": "Name",
+  "password": "Password",
+  "confirmPassword": "Confirm Password",
+  "crerTonCompte": "Create account",
+  "connexion": "Connection",
+  "creation": "Add Task",
+  "dateInput": "Enter the date",
+  "create": "Add",
+  "consultation": "Details",
+  "details": "Details",
+  "deadline": "Deadline",
+  "percentageDone": "Percentage Done",
+  "percentageTimeSpent": "Percentage Time Spent",
+  "modifier": "Edit",
+  "accueil": "Home"
+}
