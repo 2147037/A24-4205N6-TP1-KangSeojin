@@ -1,4 +1,6 @@
-{"inscription": "Register",
+{
+  "@@locale": "en",
+  "inscription": "Register",
   "nom": "Name",
   "password": "Password",
   "confirmPassword": "Confirm Password",

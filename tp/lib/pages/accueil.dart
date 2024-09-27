@@ -49,86 +49,15 @@ class _AccueilState extends State<Accueil> {
         title:  Text(S.of(context).accueil, style: TextStyle(color: Colors.white),),
         iconTheme: IconThemeData(color: Colors.white),
       ),
-      body: ListView(
-        children: items.map((item) {
-          String formattedDate = DateFormat("yyyy-MM-dd").format(item.deadline);
-
-          return Card(
-            color: Colors.cyan,
-              child: ListTile(
-                leading: Icon(Icons.task),
-                title: Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(10,0,0,5),
-                      child: Container(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          item.name +"\n"+S.of(context).deadline +" : "+ formattedDate ,style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.left,) ,
-                      ),
-                    ),
-                    LinearPercentIndicator(
-                      animation: true,
-                      animationDuration: 1000,
-                      lineHeight: 20.0,
-                      percent: item.percentageDone/100,
-                      center: Text(
-                          S.of(context).percentageDone + " - " +item.percentageDone.toString() + "%",
-                          style: TextStyle(
-                              fontSize: 10.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black
-                          )
-                      ),
-                    ),
-                    Container(
-                      height: 6,
-                    ),
-                    LinearPercentIndicator(
-                      animation: true,
-                      animationDuration: 1000,
-                      lineHeight: 20.0,
-                      percent: item.percentageTimeSpent/100,
-                      center: Text(
-                          S.of(context).percentageTimeSpent + " - " +item.percentageTimeSpent.toString() + "%",
-                          style: TextStyle(
-                              fontSize: 10.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black
-                          )
-                      ),
-                    ),
-                  ],
-                ),
-                trailing: IconButton(onPressed: () async{
-                  try {
-
-                    var reponse = await detail(item.id);
-                    print(reponse);
-                    TaskDetailResponse taskDetailResponse = reponse;
-                    print(taskDetailResponse);
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => Consultation(
-                                tdr: taskDetailResponse
-                            )
-                        )
-                    );
-                  } catch(e){
-                    print(e);
-                    throw(e);
-                  }
-
-                },
-                    icon: Icon(Icons.info_outline_rounded)),
-            ),
-          );
-
-        }).toList(),
-
-        ),
+      body: OrientationBuilder(
+          builder: (context,orientation){
+            if(orientation == Orientation.portrait){
+              return _builderPortraitContainers(items: items);
+            }
+            else{
+              return _builderPortraitContainers(items: items);
+            }
+          }),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
           Navigator.push(
@@ -142,5 +71,98 @@ class _AccueilState extends State<Accueil> {
         child: const Icon(Icons.add),
       ),
     );
+  }
+}
+
+class _builderPortraitContainers extends StatelessWidget {
+  const _builderPortraitContainers({
+    super.key,
+    required this.items,
+  });
+
+  final List<HomeItemResponse> items;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      children: items.map((item) {
+        String formattedDate = DateFormat("yyyy-MM-dd").format(item.deadline);
+
+        return Card(
+          color: Colors.cyan,
+            child: ListTile(
+              leading: Icon(Icons.task),
+              title: Column(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(10,0,0,5),
+                    child: Container(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        item.name +"\n"+S.of(context).deadline +" : "+ formattedDate ,style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                      textAlign: TextAlign.left,) ,
+                    ),
+                  ),
+                  LinearPercentIndicator(
+                    animation: true,
+                    animationDuration: 1000,
+                    lineHeight: 20.0,
+                    percent: item.percentageDone/100,
+                    center: Text(
+                        S.of(context).percentageDone + " - " +item.percentageDone.toString() + "%",
+                        style: TextStyle(
+                            fontSize: 10.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black
+                        )
+                    ),
+                  ),
+                  Container(
+                    height: 6,
+                  ),
+                  LinearPercentIndicator(
+                    animation: true,
+                    animationDuration: 1000,
+                    lineHeight: 20.0,
+                    percent: item.percentageTimeSpent/100,
+                    center: Text(
+                        S.of(context).percentageTimeSpent + " - " +item.percentageTimeSpent.toString() + "%",
+                        style: TextStyle(
+                            fontSize: 10.0,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black
+                        )
+                    ),
+                  ),
+                ],
+              ),
+              trailing: IconButton(onPressed: () async{
+                try {
+
+                  var reponse = await detail(item.id);
+                  print(reponse);
+                  TaskDetailResponse taskDetailResponse = reponse;
+                  print(taskDetailResponse);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Consultation(
+                              tdr: taskDetailResponse
+                          )
+                      )
+                  );
+                } catch(e){
+                  print(e);
+                  throw(e);
+                }
+
+              },
+                  icon: Icon(Icons.info_outline_rounded)),
+          ),
+        );
+
+      }).toList(),
+
+      );
   }
 }
