@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:dio/dio.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:cookie_jar/cookie_jar.dart';
@@ -138,3 +140,17 @@ Future<String> updateProgress(int id, int valeur) async {
 
 }
 
+Future<String> up(FormData file ) async {
+
+
+  try {
+
+    var response = await SignletonDio.getDio().post('http://10.0.2.2:8080/file', data: file);
+
+    return response.data.toString();
+  }catch(e){
+    print(e);
+    throw(e);
+  }
+
+}
