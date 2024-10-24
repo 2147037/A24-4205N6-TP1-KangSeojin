@@ -103,7 +103,7 @@ class _CreationState extends State<Creation> {
                   print(e);
                   throw(e);
                 }
-                Navigator.push(
+                Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
                         builder: (context) => Accueil(

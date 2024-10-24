@@ -48,6 +48,12 @@ class _AccueilState extends State<Accueil> {
         backgroundColor: Colors.black,
         title:  Text(S.of(context).accueil, style: TextStyle(color: Colors.white),),
         iconTheme: IconThemeData(color: Colors.white),
+        actions: [Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: IconButton(onPressed: initState, icon: Icon(Icons.refresh) ),
+        )],
+
+
       ),
       body: OrientationBuilder(
           builder: (context,orientation){

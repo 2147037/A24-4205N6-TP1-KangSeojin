@@ -104,7 +104,7 @@ class _buildPortraitContainers extends StatelessWidget {
                   print(e);
                   throw(e);
                 }
-                Navigator.push(
+                Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
                         builder: (context) => Accueil( )

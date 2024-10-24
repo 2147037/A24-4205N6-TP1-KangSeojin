@@ -31,36 +31,35 @@ class _ConsultationState extends State<Consultation> {
   @override
   void initState() {
     // TODO: implement initState
-    if(widget.tdr.photoId!=0){
-      imageURL = "http://10.0.2.2:8080/file/" +widget.tdr.photoId.toString();
+    if (widget.tdr.photoId != 0) {
+      imageURL = "http://10.0.2.2:8080/file/" + widget.tdr.photoId.toString();
     }
     super.initState();
   }
 
-  void getImage() async {
+  /*void getImage() async {
     ImagePicker picker = ImagePicker();
-    pickedImage = await picker.pickImage(source:ImageSource.gallery);
+    pickedImage = await picker.pickImage(source: ImageSource.gallery);
     setState(() {});
-  }
+  }*/
 
-  void sendImage() async{
+  void sendImage() async {
+    ImagePicker picker = ImagePicker();
+    pickedImage = await picker.pickImage(source: ImageSource.gallery);
 
     FormData formData = FormData.fromMap({
       "file": await MultipartFile.fromFile(pickedImage!.path,
-          filename:pickedImage!.name),
-      "taskID" : widget.tdr.id
+          filename: pickedImage!.name),
+      "taskID": widget.tdr.id
     });
-
-
 
     String id = await up(formData);
 
-    imageURL = "http://10.0.2.2:8080/file/" +id;
-    cookie =  SignletonDio.cookie;
+    imageURL = "http://10.0.2.2:8080/file/" + id;
+    cookie = SignletonDio.cookie;
 
     setState(() {});
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -75,8 +74,7 @@ class _ConsultationState extends State<Consultation> {
           ),
           iconTheme: IconThemeData(color: Colors.white),
         ),
-        body:
-        OrientationBuilder(builder: (context, orientation) {
+        body: OrientationBuilder(builder: (context, orientation) {
           if (orientation == Orientation.portrait) {
             return _buildPortraitContainers(context);
           } else {
@@ -86,8 +84,7 @@ class _ConsultationState extends State<Consultation> {
   }
 
   Container _buildPortraitContainers(BuildContext context) {
-    return
-      Container(
+    return Container(
       color: Colors.white,
       child: ListView(
         children: <Widget>[
@@ -141,42 +138,34 @@ class _ConsultationState extends State<Consultation> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.fromLTRB(20,0,20,0),
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
                 child: Container(
                   height: 250,
-                color: Colors.grey,
+                  color: Colors.grey,
                   child: Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        (imageURL == "" )
-                        ?Text("Ajoute une image !!!"):
-                        Image.network(imageURL, width: 200, height: 200,)
-
-
+                        (imageURL == "")
+                            ? Text("Ajoute une image !!!")
+                            : Image.network(
+                                imageURL,
+                                width: 200,
+                                height: 200,
+                              )
                       ],
                     ),
                   ),
-                                ),
+                ),
               )
             ],
           ),
-          Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20,0,20,0),
-                child: OutlinedButton(
-                  onPressed: getImage,
-                  child: Text("Ajouter Image"),),
-              ),
-              Spacer(),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(20,0,20,0),
-                child: OutlinedButton(
-                  onPressed: sendImage,
-                  child: Text("Envoyer Image"),),
-              )
-            ],
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+            child: OutlinedButton(
+              onPressed: sendImage,
+              child: Text("Envoyer Image"),
+            ),
           ),
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
