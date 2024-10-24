@@ -44,13 +44,14 @@ class SignupResponse {
 
 @JsonSerializable()
 class HomeItemResponse {
-  HomeItemResponse(this.id, this.name ,this.percentageDone, this.percentageTimeSpent, this.deadline);
+  HomeItemResponse(this.id, this.name ,this.percentageDone, this.percentageTimeSpent, this.deadline, this.photoId);
 
   int id;
   String name;
   int percentageDone;
   double percentageTimeSpent;
   DateTime deadline;
+  int photoId;
 
   /// A necessary factory constructor for creating a new User instance
   /// from a map. Pass the map to the generated `_$UserFromJson()` constructor.
@@ -83,13 +84,14 @@ class AddTaskRequest {
 
 @JsonSerializable()
 class TaskDetailResponse {
-  TaskDetailResponse(this.id, this.name ,this.percentageDone, this.percentageTimeSpent, this.deadline);
+  TaskDetailResponse(this.id, this.name ,this.percentageDone, this.percentageTimeSpent, this.deadline, this.photoId);
 
   int id;
   String name;
   DateTime deadline;
   int percentageDone;
   double percentageTimeSpent;
+  int photoId;
 
 
   /// A necessary factory constructor for creating a new User instance

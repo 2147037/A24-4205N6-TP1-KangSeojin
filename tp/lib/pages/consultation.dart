@@ -26,11 +26,24 @@ class _ConsultationState extends State<Consultation> {
   String imagePath = "";
   XFile? pickedImage;
   String imageURL = "";
+  Cookie? cookie;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    if(widget.tdr.photoId!=0){
+      imageURL = "http://10.0.2.2:8080/file/" +widget.tdr.photoId.toString();
+    }
+    super.initState();
+  }
 
   void getImage() async {
     ImagePicker picker = ImagePicker();
-    pickedImage = await picker.pickImage(source: ImageSource.gallery);
-    imagePath = pickedImage!.path;
+    pickedImage = await picker.pickImage(source:ImageSource.gallery);
+    setState(() {});
+  }
+
+  void sendImage() async{
 
     FormData formData = FormData.fromMap({
       "file": await MultipartFile.fromFile(pickedImage!.path,
@@ -42,16 +55,12 @@ class _ConsultationState extends State<Consultation> {
 
     String id = await up(formData);
 
-    imageURL = "https://10.0.2.2:8080/file/" +id;
+    imageURL = "http://10.0.2.2:8080/file/" +id;
+    cookie =  SignletonDio.cookie;
+
     setState(() {});
   }
 
-  /*void sendImage() async{
-
-
-
-    setState((){});
-  }*/
 
   @override
   Widget build(BuildContext context) {
@@ -140,15 +149,32 @@ class _ConsultationState extends State<Consultation> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        (imagePath == "")
-                        ?OutlinedButton(onPressed: getImage, child: Text("Ajouter Image"))
-                            :Image.file(File(imagePath))
+                        (imageURL == "" )
+                        ?Text("Ajoute une image !!!"):
+                        Image.network(imageURL, width: 200, height: 200,)
 
 
                       ],
                     ),
                   ),
                                 ),
+              )
+            ],
+          ),
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20,0,20,0),
+                child: OutlinedButton(
+                  onPressed: getImage,
+                  child: Text("Ajouter Image"),),
+              ),
+              Spacer(),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(20,0,20,0),
+                child: OutlinedButton(
+                  onPressed: sendImage,
+                  child: Text("Envoyer Image"),),
               )
             ],
           ),

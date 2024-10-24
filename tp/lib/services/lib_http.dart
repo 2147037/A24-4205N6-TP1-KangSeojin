@@ -11,6 +11,7 @@ import '../models/transfer.dart';
 class SignletonDio{
   static var cookieManager = CookieManager(CookieJar());
   static String username= "";
+  static Cookie? cookie;
   static Dio getDio() {
     Dio dio = Dio();
     dio.interceptors.add(cookieManager);
@@ -71,7 +72,7 @@ Future<String> signout() async {
 Future<List<HomeItemResponse>> home() async {
 
   try {
-    var response = await SignletonDio.getDio().get('http://10.0.2.2:8080/api/home');
+    var response = await SignletonDio.getDio().get('http://10.0.2.2:8080/api/home/photo');
     //Instancier liste
     List<HomeItemResponse> homeItems = [];
 
@@ -115,7 +116,7 @@ Future<String> add(AddTaskRequest req) async {
 Future<TaskDetailResponse> detail(int id) async {
 
   try {
-    var response = await SignletonDio.getDio().get('http://10.0.2.2:8080/api/detail/' + id.toString());
+    var response = await SignletonDio.getDio().get('http://10.0.2.2:8080/api/detail/photo/' + id.toString());
 
     return TaskDetailResponse.fromJson(response.data);
   }catch(e){
@@ -146,7 +147,8 @@ Future<String> up(FormData file ) async {
   try {
 
     var response = await SignletonDio.getDio().post('http://10.0.2.2:8080/file', data: file);
-
+    List<Cookie> cookies = await SignletonDio.cookieManager.cookieJar.loadForRequest(Uri.parse("http://10.0.2.2:8080/file/"+ response.data.toString()));
+    SignletonDio.cookie = cookies.first;
     return response.data.toString();
   }catch(e){
     print(e);

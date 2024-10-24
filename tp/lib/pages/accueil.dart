@@ -134,6 +134,12 @@ class _builderPortraitContainers extends StatelessWidget {
                         )
                     ),
                   ),
+                  (item.photoId !=0)?
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image.network("http://10.0.2.2:8080/file/" + item.photoId.toString(), width: 200, height: 200,),
+                  )
+                  :Text("")
                 ],
               ),
               trailing: IconButton(onPressed: () async{
