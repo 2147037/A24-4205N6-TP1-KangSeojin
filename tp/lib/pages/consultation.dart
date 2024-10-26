@@ -1,6 +1,7 @@
 import 'dart:ffi';
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
@@ -148,11 +149,14 @@ class _ConsultationState extends State<Consultation> {
                       children: <Widget>[
                         (imageURL == "")
                             ? Text("Ajoute une image !!!")
-                            : Image.network(
-                                imageURL,
-                                width: 200,
-                                height: 200,
-                              )
+                            : Container(
+                          width: 200,
+                          height: 200,
+                          child:  CachedNetworkImage(
+                            imageUrl: imageURL,
+                            placeholder: (context, url) => CircularProgressIndicator(),
+                            errorWidget: (context, url, error) => Icon(Icons.error),),
+                        )
                       ],
                     ),
                   ),

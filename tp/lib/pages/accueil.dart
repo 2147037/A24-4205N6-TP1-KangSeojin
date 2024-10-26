@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/percent_indicator.dart';
@@ -141,9 +142,13 @@ class _builderPortraitContainers extends StatelessWidget {
                     ),
                   ),
                   (item.photoId !=0)?
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Image.network("http://10.0.2.2:8080/file/" + item.photoId.toString(), width: 200, height: 200,),
+                  Container(
+                    width: 200,
+                    height: 200,
+                    child:  CachedNetworkImage(
+                      imageUrl: "http://10.0.2.2:8080/file/" + item.photoId.toString(),
+                      placeholder: (context, url) => CircularProgressIndicator(),
+                      errorWidget: (context, url, error) => Icon(Icons.error),),
                   )
                   :Text("")
                 ],
