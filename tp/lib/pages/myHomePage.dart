@@ -42,7 +42,7 @@ class _MyHomePageState extends State<MyHomePage> {
 }
 
 class _buildPortraitContainers extends StatelessWidget {
-  const _buildPortraitContainers({
+   _buildPortraitContainers({
     super.key,
     required this.nomController,
     required this.pwController,
@@ -50,6 +50,9 @@ class _buildPortraitContainers extends StatelessWidget {
 
   final TextEditingController nomController;
   final TextEditingController pwController;
+
+  final _formKeyName = GlobalKey<FormState>();
+  final _formKeyPw = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -71,24 +74,49 @@ class _buildPortraitContainers extends StatelessWidget {
               child: Image.asset('asset/images/Logo.png'),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20,10,20,10),
-            child: TextField(
-              controller: nomController,
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: S.of(context).nom
+          Form(
+            key: _formKeyName,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(20,10,20,10),
+              child: TextFormField(
+                validator: (value){
+                  if(value == null || value.isEmpty){
+                    return "Please enter some text";
+                  }
+                  if(value.length < 2){
+                    return "Username is too short";
+                  }
+
+                  return null;
+                },
+                controller: nomController,
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: S.of(context).nom,
+                ),
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20,10,20,10),
-            child: TextField(
-              controller: pwController,
-              obscureText: true,
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: S.of(context).password
+          Form(
+            key: _formKeyPw,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(20,10,20,10),
+              child: TextFormField(
+                validator: (item){
+                  if(item == null || item.isEmpty){
+                    return "Please enter some text";
+                  }
+
+                  if(item.length < 4){
+                    return "Password is too short";
+                  }
+                },
+                controller: pwController,
+                obscureText: true,
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: S.of(context).password
+                ),
               ),
             ),
           ),
@@ -96,6 +124,20 @@ class _buildPortraitContainers extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(40,10,40,10),
             child: OutlinedButton(
               onPressed: () async{
+                bool bothGood = true;
+                // Validate name
+                /*_formKeyName.currentState!.validate();
+
+                // Validate Password
+                _formKeyPw.currentState!.validate();
+                if(_formKeyName.currentState!.validate() ==false || _formKeyPw.currentState!.validate()==false){
+                  return;
+                }
+
+                 */
+
+
+
                 try {
                   SignupRequest request = SignupRequest(nomController.text, pwController.text);
                   var reponse = await signin(request);

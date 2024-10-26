@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 import '../generated/l10n.dart';
@@ -18,6 +19,7 @@ class _InscriptionState extends State<Inscription> {
   final nomController = TextEditingController();
   final pwController = TextEditingController();
   final confPwController = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +43,7 @@ class _InscriptionState extends State<Inscription> {
 }
 
 class _buildPortraitContainer extends StatelessWidget {
-  const _buildPortraitContainer({
+   _buildPortraitContainer({
     super.key,
     required this.nomController,
     required this.pwController,
@@ -51,6 +53,9 @@ class _buildPortraitContainer extends StatelessWidget {
   final TextEditingController nomController;
   final TextEditingController pwController;
   final TextEditingController confPwController;
+
+  final _formKeyName = GlobalKey<FormState>();
+  final _formKeyPw = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -72,13 +77,26 @@ class _buildPortraitContainer extends StatelessWidget {
               child: Image.asset('asset/images/Logo.png'),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(20,10,20,10),
-            child: TextField(
-              controller: nomController,
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: S.of(context).nom
+          Form(
+            key: _formKeyName,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(20,10,20,10),
+              child: TextFormField(
+                validator: (value){
+                  if(value == null || value.isEmpty){
+                    return "Please enter some text";
+                  }
+                  if(value.length < 2){
+                    return "Username is too short";
+                  }
+
+                  return null;
+                },
+                controller: nomController,
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: S.of(context).nom
+                ),
               ),
             ),
           ),
@@ -116,7 +134,14 @@ class _buildPortraitContainer extends StatelessWidget {
 
                   print(reponse);
                 } catch(e){
-                  print(e);
+                  if( e is DioException){
+                    print(e.response?.data);
+                    print(e.response?.statusCode);
+                    print(e.response?.headers);
+
+                  }
+                  print(e.toString());
+
                   throw(e);
                 }
                 Navigator.pushReplacement(
