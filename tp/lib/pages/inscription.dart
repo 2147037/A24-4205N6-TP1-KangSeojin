@@ -1,10 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
 import '../generated/l10n.dart';
 import '../models/transfer.dart';
 import '../services/lib_http.dart';
 import 'accueil.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 // TODO Un ecran minimal avec un tres peu de code
 class Inscription extends StatefulWidget {
@@ -56,6 +58,9 @@ class _buildPortraitContainer extends StatelessWidget {
 
   final _formKeyName = GlobalKey<FormState>();
   final _formKeyPw = GlobalKey<FormState>();
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -113,6 +118,26 @@ class _buildPortraitContainer extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(40,10,40,10),
             child: OutlinedButton(
               onPressed: () async {
+                bool isConnected = true;
+                final listener = InternetConnection().onStatusChange.listen((InternetStatus status){
+                  switch (status) {
+                    case InternetStatus.connected:
+                      isConnected = true;
+                    break;
+                    case InternetStatus.disconnected:
+                      final snackBar = SnackBar(
+                          content:  Text("La connexion n'est pas active.")
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      isConnected = false;
+                    break;
+                  }
+                });
+
+                if(isConnected ==false){
+                  return;
+                }
+
                 if(pwController.text !=confPwController.text){
                   final snackBar = SnackBar(
                       content:  Text("Les mots de passe ne se concordent pas")

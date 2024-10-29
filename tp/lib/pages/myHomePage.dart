@@ -101,17 +101,6 @@ class _buildPortraitContainers extends StatelessWidget {
             child: OutlinedButton(
               onPressed: () async{
                 bool bothGood = true;
-                // Validate name
-                /*_formKeyName.currentState!.validate();
-
-                // Validate Password
-                _formKeyPw.currentState!.validate();
-                if(_formKeyName.currentState!.validate() ==false || _formKeyPw.currentState!.validate()==false){
-                  return;
-                }
-
-                 */
-
 
 
                 try {

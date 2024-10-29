@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
@@ -24,7 +25,16 @@ class _AccueilState extends State<Accueil> {
 
   @override
   void initState() {
+
     // TODO: implement initStat
+
+    addListener();
+    remplirListe();
+
+    super.initState();
+  }
+
+  void remplirListe(){
     try {
       home().then((reponse) {
         print(reponse);
@@ -33,13 +43,37 @@ class _AccueilState extends State<Accueil> {
       },);
     } catch(e){
       print(e);
-      throw(e);
-    }
-    setState(() {
+      //throw(e);
+      final snackBar = SnackBar(
+          content:  Text("Tu n'es toujours pas connecté.")
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
-    });
-    super.initState();
+    }
+
   }
+
+  void addListener() {
+    bool isConnected = true;
+    final listener = InternetConnection().onStatusChange.listen((InternetStatus status){
+      switch (status) {
+        case InternetStatus.connected:
+          isConnected = true;
+          break;
+        case InternetStatus.disconnected:
+          final snackBar = SnackBar(
+              content:  Text("La connexion n'est pas active.")
+          );
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          isConnected = false;
+          break;
+      }
+    });
+  }
+
+
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +85,7 @@ class _AccueilState extends State<Accueil> {
         iconTheme: IconThemeData(color: Colors.white),
         actions: [Padding(
           padding: const EdgeInsets.all(8.0),
-          child: IconButton(onPressed: initState, icon: Icon(Icons.refresh) ),
+          child: IconButton(onPressed: remplirListe, icon: Icon(Icons.refresh) ),
         )],
 
 
