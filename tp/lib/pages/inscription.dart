@@ -77,21 +77,9 @@ class _buildPortraitContainer extends StatelessWidget {
               child: Image.asset('asset/images/Logo.png'),
             ),
           ),
-          Form(
-            key: _formKeyName,
-            child: Padding(
+          Padding(
               padding: const EdgeInsets.fromLTRB(20,10,20,10),
-              child: TextFormField(
-                validator: (value){
-                  if(value == null || value.isEmpty){
-                    return "Please enter some text";
-                  }
-                  if(value.length < 2){
-                    return "Username is too short";
-                  }
-
-                  return null;
-                },
+              child: TextField(
                 controller: nomController,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -99,7 +87,6 @@ class _buildPortraitContainer extends StatelessWidget {
                 ),
               ),
             ),
-          ),
           Padding(
             padding: const EdgeInsets.fromLTRB(20,10,20,10),
             child: TextField(
@@ -126,6 +113,15 @@ class _buildPortraitContainer extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(40,10,40,10),
             child: OutlinedButton(
               onPressed: () async {
+                if(pwController.text !=confPwController.text){
+                  final snackBar = SnackBar(
+                      content:  Text("Les mots de passe ne se concordent pas")
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                  return;
+                }
+
                 try {
                   SignupRequest request = SignupRequest(nomController.text, pwController.text);
                   var reponse = await signup(request);
@@ -135,9 +131,12 @@ class _buildPortraitContainer extends StatelessWidget {
                   print(reponse);
                 } catch(e){
                   if( e is DioException){
-                    print(e.response?.data);
-                    print(e.response?.statusCode);
-                    print(e.response?.headers);
+                    String errorMessage = e.response!.data.toString();
+                    final snackBar = SnackBar(
+                        content:  Text(errorMessage)
+                    );
+
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
                   }
                   print(e.toString());

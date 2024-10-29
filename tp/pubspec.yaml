@@ -45,6 +45,7 @@ dependencies:
   percent_indicator: ^4.2.3
   image_picker: ^1.1.2
   cached_network_image: ^3.4.1
+  connectivity_plus: ^6.1.0
 
 dev_dependencies:
   flutter_test:

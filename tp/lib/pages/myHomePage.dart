@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 import '../generated/l10n.dart';
@@ -74,49 +75,24 @@ class _buildPortraitContainers extends StatelessWidget {
               child: Image.asset('asset/images/Logo.png'),
             ),
           ),
-          Form(
-            key: _formKeyName,
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(20,10,20,10),
-              child: TextFormField(
-                validator: (value){
-                  if(value == null || value.isEmpty){
-                    return "Please enter some text";
-                  }
-                  if(value.length < 2){
-                    return "Username is too short";
-                  }
-
-                  return null;
-                },
-                controller: nomController,
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: S.of(context).nom,
-                ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20,10,20,10),
+            child: TextField(
+              controller: nomController,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: S.of(context).nom,
               ),
             ),
           ),
-          Form(
-            key: _formKeyPw,
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(20,10,20,10),
-              child: TextFormField(
-                validator: (item){
-                  if(item == null || item.isEmpty){
-                    return "Please enter some text";
-                  }
-
-                  if(item.length < 4){
-                    return "Password is too short";
-                  }
-                },
-                controller: pwController,
-                obscureText: true,
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: S.of(context).password
-                ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20,10,20,10),
+            child: TextField(
+              controller: pwController,
+              obscureText: true,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: S.of(context).password
               ),
             ),
           ),
@@ -143,7 +119,15 @@ class _buildPortraitContainers extends StatelessWidget {
                   var reponse = await signin(request);
                   print(reponse);
                 } catch(e){
-                  print(e);
+                  if( e is DioException){
+                    String errorMessage = e.response!.data.toString();
+                    final snackBar = SnackBar(
+                        content:  Text(errorMessage)
+                    );
+
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                  }
                   throw(e);
                 }
                 Navigator.pushReplacement(
