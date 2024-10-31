@@ -209,6 +209,56 @@ class S {
       args: [],
     );
   }
+
+  /// `The connection is not active.`
+  String get laConnexionNestPasActive {
+    return Intl.message(
+      'The connection is not active.',
+      name: 'laConnexionNestPasActive',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The passwords does not match.`
+  String get lesMotsDePasseNeSeConcordentPas {
+    return Intl.message(
+      'The passwords does not match.',
+      name: 'lesMotsDePasseNeSeConcordentPas',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add an image !!!`
+  String get ajouteUneImage {
+    return Intl.message(
+      'Add an image !!!',
+      name: 'ajouteUneImage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Send image`
+  String get envoyerImage {
+    return Intl.message(
+      'Send image',
+      name: 'envoyerImage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You are not connected cawliss`
+  String get tuNesToujoursPasConnect {
+    return Intl.message(
+      'You are not connected cawliss',
+      name: 'tuNesToujoursPasConnect',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

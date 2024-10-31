@@ -14,5 +14,10 @@
   "percentageDone": "Pourcentage réalisé",
   "percentageTimeSpent": "Pourcentage de temps passé",
   "modifier": "Modifier",
-  "accueil": "Accueil"
+  "accueil": "Accueil",
+  "laConnexionNestPasActive": "La connexion n'est pas active.",
+  "lesMotsDePasseNeSeConcordentPas": "Les mots de passe ne se concordent pas",
+  "ajouteUneImage": "Ajoute une image !!!",
+  "envoyerImage": "Envoyer Image",
+  "tuNesToujoursPasConnect": "Tu n'es toujours pas connecté."
 }

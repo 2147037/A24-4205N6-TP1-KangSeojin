@@ -159,7 +159,7 @@ class _ConsultationState extends State<Consultation> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         (imageURL == "")
-                            ? Text("Ajoute une image !!!")
+                            ? Text(S.of(context).ajouteUneImage)
                             : Container(
                           width: 200,
                           height: 200,
@@ -179,7 +179,7 @@ class _ConsultationState extends State<Consultation> {
             padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
             child: OutlinedButton(
               onPressed: sendImage,
-              child: Text("Envoyer Image"),
+              child: Text(S.of(context).envoyerImage),
             ),
           ),
           Padding(

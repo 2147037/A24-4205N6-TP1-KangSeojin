@@ -15,5 +15,10 @@
   "percentageDone": "Percentage Done",
   "percentageTimeSpent": "Percentage Time Spent",
   "modifier": "Edit",
-  "accueil": "Home"
+  "accueil": "Home",
+  "laConnexionNestPasActive": "The connection is not active.",
+  "lesMotsDePasseNeSeConcordentPas": "The passwords does not match.",
+  "ajouteUneImage": "Add an image !!!",
+  "envoyerImage": "Send image",
+  "tuNesToujoursPasConnect": "You are not connected cawliss"
 }

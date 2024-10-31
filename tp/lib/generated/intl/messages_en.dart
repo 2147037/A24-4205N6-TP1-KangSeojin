@@ -23,6 +23,8 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "accueil": MessageLookupByLibrary.simpleMessage("Home"),
+        "ajouteUneImage":
+            MessageLookupByLibrary.simpleMessage("Add an image !!!"),
         "confirmPassword":
             MessageLookupByLibrary.simpleMessage("Confirm Password"),
         "connexion": MessageLookupByLibrary.simpleMessage("Connection"),
@@ -33,13 +35,20 @@ class MessageLookup extends MessageLookupByLibrary {
         "dateInput": MessageLookupByLibrary.simpleMessage("Enter the date"),
         "deadline": MessageLookupByLibrary.simpleMessage("Deadline"),
         "details": MessageLookupByLibrary.simpleMessage("Details"),
+        "envoyerImage": MessageLookupByLibrary.simpleMessage("Send image"),
         "inscription": MessageLookupByLibrary.simpleMessage("Register"),
+        "laConnexionNestPasActive": MessageLookupByLibrary.simpleMessage(
+            "The connection is not active."),
+        "lesMotsDePasseNeSeConcordentPas": MessageLookupByLibrary.simpleMessage(
+            "The passwords does not match."),
         "modifier": MessageLookupByLibrary.simpleMessage("Edit"),
         "nom": MessageLookupByLibrary.simpleMessage("Name"),
         "password": MessageLookupByLibrary.simpleMessage("Password"),
         "percentageDone":
             MessageLookupByLibrary.simpleMessage("Percentage Done"),
         "percentageTimeSpent":
-            MessageLookupByLibrary.simpleMessage("Percentage Time Spent")
+            MessageLookupByLibrary.simpleMessage("Percentage Time Spent"),
+        "tuNesToujoursPasConnect": MessageLookupByLibrary.simpleMessage(
+            "You are not connected cawliss")
       };
 }

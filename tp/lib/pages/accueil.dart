@@ -22,7 +22,7 @@ class Accueil extends StatefulWidget {
 
 class _AccueilState extends State<Accueil> {
   List<HomeItemResponse> items = [];
-  int nbListener = 0;
+  static int nbListener = 0;
   bool finished =false;
 
 
@@ -52,7 +52,7 @@ class _AccueilState extends State<Accueil> {
       print(e);
       //throw(e);
       final snackBar = SnackBar(
-          content:  Text("Tu n'es toujours pas connecté.")
+          content:  Text(S.of(context).tuNesToujoursPasConnect)
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
@@ -67,13 +67,14 @@ class _AccueilState extends State<Accueil> {
       return;
     }
     final listener = InternetConnection().onStatusChange.listen((InternetStatus status){
+      print(status);
       switch (status) {
         case InternetStatus.connected:
           isConnected = true;
           break;
         case InternetStatus.disconnected:
           final snackBar = SnackBar(
-              content:  Text("La connexion n'est pas active.")
+              content:  Text(S.of(context).laConnexionNestPasActive)
           );
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
           isConnected = false;
@@ -83,10 +84,6 @@ class _AccueilState extends State<Accueil> {
 
     nbListener++;
   }
-
-
-
-
 
   @override
   Widget build(BuildContext context) {

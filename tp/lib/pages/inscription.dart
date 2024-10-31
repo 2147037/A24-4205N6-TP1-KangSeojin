@@ -158,7 +158,7 @@ class _buildPortraitContainer extends StatelessWidget {
                     break;
                     case InternetStatus.disconnected:
                       final snackBar = SnackBar(
-                          content:  Text("La connexion n'est pas active.")
+                          content:  Text(S.of(context).laConnexionNestPasActive)
                       );
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       isConnected = false;
@@ -172,7 +172,7 @@ class _buildPortraitContainer extends StatelessWidget {
 
                 if(pwController.text !=confPwController.text){
                   final snackBar = SnackBar(
-                      content:  Text("Les mots de passe ne se concordent pas")
+                      content:  Text(S.of(context).lesMotsDePasseNeSeConcordentPas)
                   );
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   return;
