@@ -38,11 +38,18 @@ class _ConsultationState extends State<Consultation> {
     super.initState();
   }
 
-  /*void getImage() async {
-    ImagePicker picker = ImagePicker();
-    pickedImage = await picker.pickImage(source: ImageSource.gallery);
-    setState(() {});
-  }*/
+  void deleteTask() async {
+    try {
+      var reponse = await delete(widget.tdr.id);
+      print(reponse);
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => Accueil()));
+    } catch (e) {
+      print(e);
+      throw (e);
+    }
+
+  }
 
   void sendImage() async {
     ImagePicker picker = ImagePicker();
@@ -74,6 +81,10 @@ class _ConsultationState extends State<Consultation> {
             style: TextStyle(color: Colors.white),
           ),
           iconTheme: IconThemeData(color: Colors.white),
+          actions: [Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: IconButton(onPressed: deleteTask, icon: Icon(Icons.delete) ),
+          )],
         ),
         body: OrientationBuilder(builder: (context, orientation) {
           if (orientation == Orientation.portrait) {
@@ -213,4 +224,6 @@ class _ConsultationState extends State<Consultation> {
       ),
     );
   }
+
+
 }

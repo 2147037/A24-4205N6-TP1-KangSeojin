@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:intl/intl.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 
 import '../generated/l10n.dart';
@@ -21,6 +22,9 @@ class Accueil extends StatefulWidget {
 
 class _AccueilState extends State<Accueil> {
   List<HomeItemResponse> items = [];
+  int nbListener = 0;
+  bool finished =false;
+
 
 
   @override
@@ -35,10 +39,13 @@ class _AccueilState extends State<Accueil> {
   }
 
   void remplirListe(){
+    finished =false;
+    setState(() {});
     try {
       home().then((reponse) {
         print(reponse);
         items = reponse;
+        finished = true;
         setState(() {});
       },);
     } catch(e){
@@ -55,6 +62,10 @@ class _AccueilState extends State<Accueil> {
 
   void addListener() {
     bool isConnected = true;
+
+    if(nbListener!=0){
+      return;
+    }
     final listener = InternetConnection().onStatusChange.listen((InternetStatus status){
       switch (status) {
         case InternetStatus.connected:
@@ -69,6 +80,8 @@ class _AccueilState extends State<Accueil> {
           break;
       }
     });
+
+    nbListener++;
   }
 
 
@@ -93,10 +106,11 @@ class _AccueilState extends State<Accueil> {
       body: OrientationBuilder(
           builder: (context,orientation){
             if(orientation == Orientation.portrait){
-              return _builderPortraitContainers(items: items);
+              nbListener++;
+              return finished? _builderPortraitContainers(items: items, finished: finished ) : _loading(finished: finished);
             }
             else{
-              return _builderPortraitContainers(items: items);
+              return finished? _builderPortraitContainers(items: items, finished: finished ) : _loading(finished: finished);
             }
           }),
       floatingActionButton: FloatingActionButton(
@@ -115,16 +129,46 @@ class _AccueilState extends State<Accueil> {
   }
 }
 
+
+class _loading extends StatelessWidget{
+  const _loading({
+    super.key,
+    required this.finished
+  });
+
+  final bool finished;
+
+  @override
+  Widget build(BuildContext context){
+    return Center(
+      child: Container(
+        height: 300,
+        child: LoadingIndicator(
+          colors: const [Colors.blue],
+          indicatorType: Indicator.circleStrokeSpin ,
+          strokeWidth: 3,
+          pause: finished,
+        ),
+      ),
+    );
+  }
+}
+
+
+
 class _builderPortraitContainers extends StatelessWidget {
   const _builderPortraitContainers({
     super.key,
     required this.items,
+    required this.finished
   });
 
   final List<HomeItemResponse> items;
+  final bool finished ;
 
   @override
   Widget build(BuildContext context) {
+
     return ListView(
       children: items.map((item) {
         String formattedDate = DateFormat("yyyy-MM-dd").format(item.deadline);

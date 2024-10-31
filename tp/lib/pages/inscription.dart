@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 
 import '../generated/l10n.dart';
 import '../models/transfer.dart';
@@ -22,6 +23,9 @@ class _InscriptionState extends State<Inscription> {
   final pwController = TextEditingController();
   final confPwController = TextEditingController();
 
+  bool finished =false;
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -33,13 +37,38 @@ class _InscriptionState extends State<Inscription> {
       body: OrientationBuilder(
           builder: (context, orientation){
             if(orientation == Orientation.portrait){
-              return _buildPortraitContainer(nomController: nomController, pwController: pwController, confPwController: confPwController);
+              return _buildPortraitContainer(nomController: nomController, pwController: pwController, confPwController: confPwController, finished: finished,);
 
             }
             else{
-            return _buildPortraitContainer(nomController: nomController, pwController: pwController, confPwController: confPwController);
+            return _buildPortraitContainer(nomController: nomController, pwController: pwController, confPwController: confPwController, finished: finished,);
             }
           })
+    );
+  }
+}
+class _loading extends StatelessWidget{
+  const _loading({
+    super.key,
+    required this.finished
+  });
+
+  final bool finished;
+
+  @override
+  Widget build(BuildContext context){
+    return Center(
+      child: Center(
+        child: Container(
+          height: 30,
+          child: LoadingIndicator(
+            colors: const [Colors.blue],
+            indicatorType: Indicator.pacman ,
+            strokeWidth: 3,
+            pause: finished,
+          ),
+        ),
+      ),
     );
   }
 }
@@ -50,6 +79,7 @@ class _buildPortraitContainer extends StatelessWidget {
     required this.nomController,
     required this.pwController,
     required this.confPwController,
+     required this.finished
   });
 
   final TextEditingController nomController;
@@ -58,6 +88,8 @@ class _buildPortraitContainer extends StatelessWidget {
 
   final _formKeyName = GlobalKey<FormState>();
   final _formKeyPw = GlobalKey<FormState>();
+
+  final bool finished;
 
 
 
@@ -143,39 +175,46 @@ class _buildPortraitContainer extends StatelessWidget {
                       content:  Text("Les mots de passe ne se concordent pas")
                   );
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
                   return;
                 }
 
                 try {
+                  ScaffoldMessenger.of(context).showMaterialBanner(
+                    MaterialBanner(
+                        content: _loading(finished: finished),
+                        actions: <Widget>[
+                          Text("")
+                        ]
+                    )
+                  );
                   SignupRequest request = SignupRequest(nomController.text, pwController.text);
                   var reponse = await signup(request);
-
-
-
                   print(reponse);
+
+
+
+                  ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Accueil(
+
+                          )
+                      )
+                  );
                 } catch(e){
                   if( e is DioException){
+                    ScaffoldMessenger.of(context).hideCurrentMaterialBanner();
                     String errorMessage = e.response!.data.toString();
                     final snackBar = SnackBar(
                         content:  Text(errorMessage)
                     );
-
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
                   }
                   print(e.toString());
-
                   throw(e);
                 }
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => Accueil(
 
-                        )
-                    )
-                );
               },
               child: Text(S.of(context).crerTonCompte),
             ),

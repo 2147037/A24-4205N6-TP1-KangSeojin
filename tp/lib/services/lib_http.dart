@@ -156,3 +156,16 @@ Future<String> up(FormData file ) async {
   }
 
 }
+
+Future<String> delete(int taskId) async {
+
+  try {
+    var response = await SignletonDio.getDio().get('http://10.0.2.2:8080/api/delete/' + taskId.toString());
+    print(response);
+    return response.data.toString();
+  }catch(e){
+    print(e);
+    throw(e);
+  }
+
+}
