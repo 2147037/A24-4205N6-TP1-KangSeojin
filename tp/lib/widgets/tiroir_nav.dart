@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tp/main.dart';
 
 import '../pages/accueil.dart';
@@ -8,9 +9,10 @@ import '../services/lib_http.dart';
 
 
 class LeTiroir extends StatefulWidget {
-  const LeTiroir({super.key, required this.username });
+  const LeTiroir({super.key, required this.username , required this.prefs});
 
   final String username;
+  final SharedPreferences prefs;
 
   @override
   State<LeTiroir> createState() => LeTiroirState();
@@ -47,7 +49,7 @@ class LeTiroirState extends State<LeTiroir> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => Accueil(),
+                builder: (context) => Accueil(prefs: widget.prefs,),
               ),
             );
           },
@@ -62,7 +64,7 @@ class LeTiroirState extends State<LeTiroir> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => Creation(),
+                builder: (context) => Creation(prefs: widget.prefs,),
               ),
             );
           },
@@ -82,6 +84,8 @@ class LeTiroirState extends State<LeTiroir> {
                     builder: (context) => const MyHomePage(title: "title"),
                   ),
               );
+
+              widget.prefs.clear();
             } catch(e){
               print(e);
               throw(e);

@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:loading_indicator/loading_indicator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../generated/l10n.dart';
 import '../models/transfer.dart';
@@ -24,6 +25,43 @@ class _InscriptionState extends State<Inscription> {
   final confPwController = TextEditingController();
 
   bool finished =false;
+
+  late SharedPreferences _prefs;
+  String nomUtil = '';
+  String password = '';
+
+  @override
+  void initState() {
+    super.initState();
+    // TODO 1 Obtenir les préférences partagées
+    // Attention, on obtient les préférence qu'une seule fois.
+    // Si elles sont mises à jour par la suite, il faudra les obtenir à nouveau.
+    _goodPrefs();
+  }
+
+  void _goodPrefs() async{
+    _prefs = await SharedPreferences.getInstance();
+    _obtenirPrefs();
+  }
+
+
+// TODO 2 Définir les préférences
+  void _definirPrefs() {
+    _prefs.setString('username', nomController.text);
+    _prefs.setString('password', pwController.text);
+    setState(() {
+      nomUtil = nomController.text;
+      password = pwController.text;
+    });
+  }
+
+// TODO 3 Obtenir les préférences
+  _obtenirPrefs() {
+    setState(() {
+      nomUtil = _prefs.getString('username') ?? '';
+      password = _prefs.getString('password') ?? '';
+    });
+  }
 
 
 
@@ -86,7 +124,6 @@ class _buildPortraitContainer extends StatelessWidget {
   final TextEditingController pwController;
   final TextEditingController confPwController;
 
-  final _formKeyName = GlobalKey<FormState>();
   final _formKeyPw = GlobalKey<FormState>();
 
   final bool finished;
@@ -197,7 +234,7 @@ class _buildPortraitContainer extends StatelessWidget {
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => Accueil(
+                          builder: (context) => Accueil(prefs: _InscriptionState()._prefs,
 
                           )
                       )

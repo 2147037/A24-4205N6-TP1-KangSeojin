@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../generated/l10n.dart';
 import '../models/transfer.dart';
@@ -9,7 +10,9 @@ import 'accueil.dart';
 
 // TODO Un ecran minimal avec un tres peu de code
 class Creation extends StatefulWidget {
-  const Creation({super.key});
+  const Creation({super.key, required this.prefs});
+
+  final SharedPreferences prefs;
 
   @override
   State<Creation> createState() => _CreationState();
@@ -23,7 +26,7 @@ class _CreationState extends State<Creation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: LeTiroir(username: SignletonDio.username),
+      drawer: LeTiroir(username: SignletonDio.username, prefs: widget.prefs,),
       appBar: AppBar(
         backgroundColor: Colors.black,
         title:  Text(S.of(context).creation, style: TextStyle(color: Colors.white),),
@@ -106,7 +109,7 @@ class _CreationState extends State<Creation> {
                 Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => Accueil(
+                        builder: (context) => Accueil(prefs: widget.prefs,
                         )
                     )
                 );

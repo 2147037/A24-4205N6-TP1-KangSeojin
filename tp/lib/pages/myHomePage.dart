@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import '../generated/l10n.dart';
 import '../models/transfer.dart';
 import '../services/lib_http.dart';
@@ -19,6 +19,68 @@ class _MyHomePageState extends State<MyHomePage> {
   final nomController = TextEditingController();
   final pwController = TextEditingController();
 
+  late SharedPreferences _prefs;
+  String nomUtil = '';
+  String password = '';
+
+
+  @override
+  void initState() {
+    super.initState();
+    // TODO 1 Obtenir les préférences partagées
+    // Attention, on obtient les préférence qu'une seule fois.
+    // Si elles sont mises à jour par la suite, il faudra les obtenir à nouveau.
+    _goodPrefs();
+  }
+
+  void _goodPrefs() async{
+    _prefs = await SharedPreferences.getInstance();
+    _obtenirPrefs();
+  }
+
+
+// TODO 2 Définir les préférences
+ void _definirPrefs() {
+  _prefs.setString('username', nomController.text);
+  _prefs.setString('password', pwController.text);
+  setState(() {
+    nomUtil = nomController.text;
+    password = pwController.text;
+  });
+}
+
+// TODO 3 Obtenir les préférences
+_obtenirPrefs() async{
+  nomUtil = _prefs.getString('username') ?? '';
+  password = _prefs.getString('password') ?? '';
+  if(nomUtil != '' && password!= '') {
+    try {
+      SignupRequest request = SignupRequest(nomUtil, password);
+      var reponse = await signin(request);
+      _definirPrefs();
+      print(reponse);
+    } catch (e) {
+      if (e is DioException) {
+        String errorMessage = e.response!.data.toString();
+        final snackBar = SnackBar(
+            content: Text(errorMessage)
+        );
+
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+      throw(e);
+    }
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) => Accueil(prefs: _MyHomePageState()._prefs,)
+        )
+    );
+  }
+  setState(() {
+  });
+}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,11 +92,11 @@ class _MyHomePageState extends State<MyHomePage> {
       body: OrientationBuilder(
           builder: (context, orientation) {
             if(orientation == Orientation.portrait){
-              return _buildPortraitContainers(nomController: nomController, pwController: pwController);
+              return _buildPortraitContainers(nomController: nomController, pwController: pwController, myHomePage: MyHomePage(title: "title"),);
 
             }
             else{
-              return _buildPortraitContainers(nomController: nomController, pwController: pwController);
+              return _buildPortraitContainers(nomController: nomController, pwController: pwController,);
 
             }
           })
@@ -47,13 +109,15 @@ class _buildPortraitContainers extends StatelessWidget {
     super.key,
     required this.nomController,
     required this.pwController,
+     required this.myHomePage
+
   });
 
   final TextEditingController nomController;
   final TextEditingController pwController;
 
-  final _formKeyName = GlobalKey<FormState>();
-  final _formKeyPw = GlobalKey<FormState>();
+  final MyHomePage myHomePage;
+
 
   @override
   Widget build(BuildContext context) {
@@ -106,6 +170,7 @@ class _buildPortraitContainers extends StatelessWidget {
                 try {
                   SignupRequest request = SignupRequest(nomController.text, pwController.text);
                   var reponse = await signin(request);
+                  _definirPrefs();
                   print(reponse);
                 } catch(e){
                   if( e is DioException){
@@ -122,7 +187,7 @@ class _buildPortraitContainers extends StatelessWidget {
                 Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => Accueil( )
+                        builder: (context) => Accueil(prefs: _MyHomePageState()._prefs,)
                     )
                 );
               },

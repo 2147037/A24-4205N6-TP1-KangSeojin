@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../generated/l10n.dart';
 import '../models/transfer.dart';
 import '../services/lib_http.dart';
@@ -14,36 +15,69 @@ import 'accueil.dart';
 
 // TODO Un ecran minimal avec un tres peu de code
 class Consultation extends StatefulWidget {
-  const Consultation({super.key, required this.tdr});
+  const Consultation({super.key, required this.TaskId, required this.prefs});
 
-  final TaskDetailResponse tdr;
+  final int TaskId;
+  final SharedPreferences prefs;
 
   @override
   State<Consultation> createState() => _ConsultationState();
 }
 
-class _ConsultationState extends State<Consultation> {
+class _ConsultationState extends State<Consultation> with WidgetsBindingObserver{
   final progressController = TextEditingController();
   String imagePath = "";
   XFile? pickedImage;
   String imageURL = "";
   Cookie? cookie;
+  TaskDetailResponse? item;
+
 
   @override
   void initState() {
-    // TODO: implement initState
-    if (widget.tdr.photoId != 0) {
-      imageURL = "http://10.0.2.2:8080/file/" + widget.tdr.photoId.toString();
-    }
+    remplir();
+
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    // TODO 2 On doit retirer l'observer à la destruction du widget
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // TODO 3 Les changements d'état de l'application sont gérés ici
+    if (state == AppLifecycleState.resumed) {
+      remplir();
+    }
+  }
+
+  void remplir() async{
+    try {
+      item = await detail(widget.TaskId);
+      if (item!.photoId != 0) {
+        imageURL = "http://10.0.2.2:8080/file/" + item!.photoId.toString();
+      }
+      setState(() {
+
+      });
+    } catch (e) {
+      print(e);
+    }
   }
 
   void deleteTask() async {
     try {
-      var reponse = await delete(widget.tdr.id);
+      var reponse = await delete(item!.id);
       print(reponse);
       Navigator.push(context,
-          MaterialPageRoute(builder: (context) => Accueil()));
+          MaterialPageRoute(builder: (context) => Accueil(prefs: widget.prefs,)));
     } catch (e) {
       print(e);
       throw (e);
@@ -58,7 +92,7 @@ class _ConsultationState extends State<Consultation> {
     FormData formData = FormData.fromMap({
       "file": await MultipartFile.fromFile(pickedImage!.path,
           filename: pickedImage!.name),
-      "taskID": widget.tdr.id
+      "taskID": item!.id
     });
 
     String id = await up(formData);
@@ -71,9 +105,34 @@ class _ConsultationState extends State<Consultation> {
 
   @override
   Widget build(BuildContext context) {
-    progressController.text = widget.tdr.percentageDone.toString();
+    if(item == null) {
+      return Scaffold(
+          drawer: LeTiroir(username: SignletonDio.username, prefs: widget.prefs,),
+          appBar: AppBar(
+            backgroundColor: Colors.black,
+            title: Text(
+              S.of(context).consultation,
+              style: TextStyle(color: Colors.white),
+            ),
+            iconTheme: IconThemeData(color: Colors.white),
+          ),
+          body: Column(
+            children: [
+              Expanded(
+                child: Center(
+                    child: CircularProgressIndicator(),
+
+                ),
+              ),
+
+            ],
+          ),
+      );
+    }
+
+    progressController.text = item!.percentageDone.toString();
     return Scaffold(
-        drawer: LeTiroir(username: SignletonDio.username),
+        drawer: LeTiroir(username: SignletonDio.username, prefs: widget.prefs,),
         appBar: AppBar(
           backgroundColor: Colors.black,
           title: Text(
@@ -112,7 +171,7 @@ class _ConsultationState extends State<Consultation> {
             padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
             child: TextField(
               readOnly: true,
-              controller: TextEditingController(text: widget.tdr.name),
+              controller: TextEditingController(text: item!.name),
               decoration: InputDecoration(
                   border: OutlineInputBorder(), labelText: S.of(context).nom),
             ),
@@ -122,7 +181,7 @@ class _ConsultationState extends State<Consultation> {
             child: TextField(
               readOnly: true,
               controller:
-                  TextEditingController(text: widget.tdr.deadline.toString()),
+                  TextEditingController(text: item!.deadline.toString()),
               decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: S.of(context).deadline),
@@ -135,7 +194,7 @@ class _ConsultationState extends State<Consultation> {
               controller: progressController,
               decoration: InputDecoration(
                   border: OutlineInputBorder(),
-                  hintText: widget.tdr.percentageDone.toString() + "%",
+                  hintText: item!.percentageDone.toString() + "%",
                   labelText: S.of(context).percentageDone),
             ),
           ),
@@ -195,8 +254,8 @@ class _ConsultationState extends State<Consultation> {
                 animation: true,
                 animationDuration: 1000,
                 lineHeight: 20.0,
-                percent: widget.tdr.percentageTimeSpent / 100,
-                center: Text(widget.tdr.percentageTimeSpent.toString() + "%",
+                percent: item!.percentageTimeSpent / 100,
+                center: Text(item!.percentageTimeSpent.toString() + "%",
                     style: TextStyle(
                         fontSize: 10.0,
                         fontWeight: FontWeight.bold,
@@ -208,10 +267,10 @@ class _ConsultationState extends State<Consultation> {
               onPressed: () async {
                 try {
                   var reponse = await updateProgress(
-                      widget.tdr.id, int.parse(progressController.text));
+                      item!.id, int.parse(progressController.text));
                   print(reponse);
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Accueil()));
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => Accueil(prefs: widget.prefs,)));
                 } catch (e) {
                   print(e);
                   throw (e);
@@ -224,6 +283,7 @@ class _ConsultationState extends State<Consultation> {
       ),
     );
   }
+
 
 
 }

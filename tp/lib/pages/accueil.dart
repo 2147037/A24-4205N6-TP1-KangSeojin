@@ -4,6 +4,7 @@ import 'package:internet_connection_checker_plus/internet_connection_checker_plu
 import 'package:intl/intl.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:percent_indicator/percent_indicator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../generated/l10n.dart';
 import '../models/transfer.dart';
@@ -13,30 +14,54 @@ import 'consultation.dart';
 import 'creation.dart';
 
 // TODO Un ecran minimal avec un tres peu de code
-class Accueil extends StatefulWidget {
-  const Accueil({super.key});
+class Accueil extends StatefulWidget  {
+  const Accueil({
+    super.key,
+    required this.prefs
+  });
+
+  final SharedPreferences prefs;
 
   @override
   State<Accueil> createState() => _AccueilState();
 }
 
-class _AccueilState extends State<Accueil> {
+class _AccueilState extends State<Accueil> with WidgetsBindingObserver {
   List<HomeItemResponse> items = [];
   static int nbListener = 0;
   bool finished =false;
+
+  final stopwatch = Stopwatch();
 
 
 
   @override
   void initState() {
-
     // TODO: implement initStat
-
     addListener();
     remplirListe();
-
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
   }
+
+  @override
+  void dispose() {
+    // TODO 2 On doit retirer l'observer à la destruction du widget
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // TODO 3 Les changements d'état de l'application sont gérés ici
+    if (state == AppLifecycleState.resumed) {
+      remplirListe();
+    }
+  }
+
+
 
   void remplirListe(){
     finished =false;
@@ -88,7 +113,7 @@ class _AccueilState extends State<Accueil> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: LeTiroir(username:  SignletonDio.username),
+      drawer: LeTiroir(username:  SignletonDio.username, prefs: widget.prefs,),
       appBar: AppBar(
         backgroundColor: Colors.black,
         title:  Text(S.of(context).accueil, style: TextStyle(color: Colors.white),),
@@ -112,10 +137,10 @@ class _AccueilState extends State<Accueil> {
           }),
       floatingActionButton: FloatingActionButton(
         onPressed: (){
-          Navigator.push(
+          Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                  builder: (context) => Creation(
+                  builder: (context) => Creation(prefs: widget.prefs,
                   )
               )
           );
@@ -231,15 +256,13 @@ class _builderPortraitContainers extends StatelessWidget {
               trailing: IconButton(onPressed: () async{
                 try {
 
-                  var reponse = await detail(item.id);
-                  print(reponse);
-                  TaskDetailResponse taskDetailResponse = reponse;
-                  print(taskDetailResponse);
-                  Navigator.push(
+
+                  Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                           builder: (context) => Consultation(
-                              tdr: taskDetailResponse
+                              TaskId: item.id,
+                              prefs: _AccueilState().widget.prefs,
                           )
                       )
                   );
