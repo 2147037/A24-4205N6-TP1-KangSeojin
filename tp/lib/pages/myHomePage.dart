@@ -27,10 +27,12 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
+    _goodPrefs();
+
     // TODO 1 Obtenir les préférences partagées
     // Attention, on obtient les préférence qu'une seule fois.
     // Si elles sont mises à jour par la suite, il faudra les obtenir à nouveau.
-    _goodPrefs();
+
   }
 
   void _goodPrefs() async{
@@ -58,7 +60,7 @@ _obtenirPrefs() async{
       SignupRequest request = SignupRequest(nomUtil, password);
       var reponse = await signin(request);
       _definirPrefs();
-      print(reponse);
+      print("ADSADASDASDASDASDASDASDASDASDSADADDSA" + reponse.toString());
     } catch (e) {
       if (e is DioException) {
         String errorMessage = e.response!.data.toString();
@@ -73,7 +75,7 @@ _obtenirPrefs() async{
     Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-            builder: (context) => Accueil(prefs: _MyHomePageState()._prefs,)
+            builder: (context) => Accueil(prefs: _prefs,)
         )
     );
   }
@@ -92,11 +94,11 @@ _obtenirPrefs() async{
       body: OrientationBuilder(
           builder: (context, orientation) {
             if(orientation == Orientation.portrait){
-              return _buildPortraitContainers(nomController: nomController, pwController: pwController, myHomePage: MyHomePage(title: "title"),);
+              return _buildPortraitContainers(nomController: nomController, pwController: pwController, prefs: _prefs,);
 
             }
             else{
-              return _buildPortraitContainers(nomController: nomController, pwController: pwController,);
+              return _buildPortraitContainers(nomController: nomController, pwController: pwController, prefs: _prefs,);
 
             }
           })
@@ -109,14 +111,19 @@ class _buildPortraitContainers extends StatelessWidget {
     super.key,
     required this.nomController,
     required this.pwController,
-     required this.myHomePage
+     required this.prefs
 
   });
 
   final TextEditingController nomController;
   final TextEditingController pwController;
+  final SharedPreferences prefs;
 
-  final MyHomePage myHomePage;
+   void _definirPrefs() {
+     prefs.setString('username', nomController.text);
+     prefs.setString('password', pwController.text);
+   }
+
 
 
   @override
@@ -170,8 +177,8 @@ class _buildPortraitContainers extends StatelessWidget {
                 try {
                   SignupRequest request = SignupRequest(nomController.text, pwController.text);
                   var reponse = await signin(request);
-                  _definirPrefs();
                   print(reponse);
+                  _definirPrefs();
                 } catch(e){
                   if( e is DioException){
                     String errorMessage = e.response!.data.toString();
@@ -187,7 +194,7 @@ class _buildPortraitContainers extends StatelessWidget {
                 Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => Accueil(prefs: _MyHomePageState()._prefs,)
+                        builder: (context) => Accueil(prefs: prefs,)
                     )
                 );
               },

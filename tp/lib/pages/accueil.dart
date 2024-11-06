@@ -129,10 +129,10 @@ class _AccueilState extends State<Accueil> with WidgetsBindingObserver {
           builder: (context,orientation){
             if(orientation == Orientation.portrait){
               nbListener++;
-              return finished? _builderPortraitContainers(items: items, finished: finished ) : _loading(finished: finished);
+              return finished? _builderPortraitContainers(items: items, finished: finished,  prefs: widget.prefs) : _loading(finished: finished);
             }
             else{
-              return finished? _builderPortraitContainers(items: items, finished: finished ) : _loading(finished: finished);
+              return finished? _builderPortraitContainers(items: items, finished: finished,  prefs: widget.prefs ) : _loading(finished: finished);
             }
           }),
       floatingActionButton: FloatingActionButton(
@@ -182,11 +182,13 @@ class _builderPortraitContainers extends StatelessWidget {
   const _builderPortraitContainers({
     super.key,
     required this.items,
-    required this.finished
+    required this.finished,
+    required this.prefs
   });
 
   final List<HomeItemResponse> items;
   final bool finished ;
+  final SharedPreferences prefs;
 
   @override
   Widget build(BuildContext context) {
@@ -262,7 +264,7 @@ class _builderPortraitContainers extends StatelessWidget {
                       MaterialPageRoute(
                           builder: (context) => Consultation(
                               TaskId: item.id,
-                              prefs: _AccueilState().widget.prefs,
+                              prefs: prefs
                           )
                       )
                   );
