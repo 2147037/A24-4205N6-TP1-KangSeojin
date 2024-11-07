@@ -46,7 +46,7 @@ class LeTiroirState extends State<LeTiroir> {
           title: const Text("Accueil"),
           onTap: () {
             Navigator.of(context).pop();
-            Navigator.push(
+            Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                 builder: (context) => Accueil(prefs: widget.prefs,),
@@ -61,7 +61,7 @@ class LeTiroirState extends State<LeTiroir> {
           title: const Text("Ajout de tâche"),
           onTap: () {
             Navigator.of(context).pop();
-            Navigator.push(
+            Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                 builder: (context) => Creation(prefs: widget.prefs,),
@@ -78,7 +78,7 @@ class LeTiroirState extends State<LeTiroir> {
               var reponse = await signout();
               print(reponse);
               Navigator.of(context).pop();
-              Navigator.push(
+              Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                     builder: (context) => const MyHomePage(title: "title"),

@@ -72,7 +72,14 @@ class _AccueilState extends State<Accueil> with WidgetsBindingObserver {
         items = reponse;
         finished = true;
         setState(() {});
-      },);
+      },).catchError((e){
+        print(e);
+        //throw(e);
+        final snackBar = SnackBar(
+            content:  Text(S.of(context).tuNesToujoursPasConnect)
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      });
     } catch(e){
       print(e);
       //throw(e);
@@ -248,7 +255,7 @@ class _builderPortraitContainers extends StatelessWidget {
                     width: 200,
                     height: 200,
                     child:  CachedNetworkImage(
-                      imageUrl: "http://10.0.2.2:8080/file/" + item.photoId.toString(),
+                      imageUrl: "http://10.0.2.2:8080/file/" + item.photoId.toString()+"?width=200",
                       placeholder: (context, url) => CircularProgressIndicator(),
                       errorWidget: (context, url, error) => Icon(Icons.error),),
                   )

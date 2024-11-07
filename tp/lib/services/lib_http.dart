@@ -15,6 +15,8 @@ class SignletonDio{
   static Dio getDio() {
     Dio dio = Dio();
     dio.interceptors.add(cookieManager);
+    dio.options.connectTimeout = Duration(seconds: 3);
+    dio.options.receiveTimeout = Duration(seconds: 3);
     return dio;
   }
 }

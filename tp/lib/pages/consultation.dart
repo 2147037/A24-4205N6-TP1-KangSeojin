@@ -62,7 +62,7 @@ class _ConsultationState extends State<Consultation> with WidgetsBindingObserver
     try {
       item = await detail(widget.TaskId);
       if (item!.photoId != 0) {
-        imageURL = "http://10.0.2.2:8080/file/" + item!.photoId.toString();
+        imageURL = "http://10.0.2.2:8080/file/" + item!.photoId.toString()+"?width=200";
       }
       setState(() {
 

@@ -75,11 +75,11 @@ class _InscriptionState extends State<Inscription> {
       body: OrientationBuilder(
           builder: (context, orientation){
             if(orientation == Orientation.portrait){
-              return _buildPortraitContainer(nomController: nomController, pwController: pwController, confPwController: confPwController, finished: finished,);
+              return _buildPortraitContainer(nomController: nomController, pwController: pwController, confPwController: confPwController, finished: finished, prefs: _prefs,);
 
             }
             else{
-            return _buildPortraitContainer(nomController: nomController, pwController: pwController, confPwController: confPwController, finished: finished,);
+            return _buildPortraitContainer(nomController: nomController, pwController: pwController, confPwController: confPwController, finished: finished, prefs: _prefs,);
             }
           })
     );
@@ -117,7 +117,8 @@ class _buildPortraitContainer extends StatelessWidget {
     required this.nomController,
     required this.pwController,
     required this.confPwController,
-     required this.finished
+     required this.finished,
+     required this.prefs
   });
 
   final TextEditingController nomController;
@@ -127,8 +128,13 @@ class _buildPortraitContainer extends StatelessWidget {
   final _formKeyPw = GlobalKey<FormState>();
 
   final bool finished;
+   final SharedPreferences prefs;
 
 
+   void _definirPrefs() {
+     prefs.setString('username', nomController.text);
+     prefs.setString('password', pwController.text);
+   }
 
 
   @override
@@ -234,11 +240,12 @@ class _buildPortraitContainer extends StatelessWidget {
                   Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => Accueil(prefs: _InscriptionState()._prefs,
+                          builder: (context) => Accueil(prefs: prefs,
 
                           )
                       )
                   );
+                  _definirPrefs();
                 } catch(e){
                   if( e is DioException){
                     ScaffoldMessenger.of(context).hideCurrentMaterialBanner();

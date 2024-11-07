@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_indicator/loading_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../generated/l10n.dart';
 import '../models/transfer.dart';
@@ -19,6 +20,8 @@ class _MyHomePageState extends State<MyHomePage> {
   final nomController = TextEditingController();
   final pwController = TextEditingController();
 
+  bool finished =false;
+
   late SharedPreferences _prefs;
   String nomUtil = '';
   String password = '';
@@ -27,9 +30,9 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
+
     _goodPrefs();
 
-    // TODO 1 Obtenir les préférences partagées
     // Attention, on obtient les préférence qu'une seule fois.
     // Si elles sont mises à jour par la suite, il faudra les obtenir à nouveau.
 
@@ -53,6 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
 // TODO 3 Obtenir les préférences
 _obtenirPrefs() async{
+
   nomUtil = _prefs.getString('username') ?? '';
   password = _prefs.getString('password') ?? '';
   if(nomUtil != '' && password!= '') {
@@ -61,6 +65,8 @@ _obtenirPrefs() async{
       var reponse = await signin(request);
       _definirPrefs();
       print("ADSADASDASDASDASDASDASDASDASDSADADDSA" + reponse.toString());
+      finished = true;
+      setState(() {});
     } catch (e) {
       if (e is DioException) {
         String errorMessage = e.response!.data.toString();
@@ -70,6 +76,7 @@ _obtenirPrefs() async{
 
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
+
       throw(e);
     }
     Navigator.pushReplacement(
@@ -78,6 +85,10 @@ _obtenirPrefs() async{
             builder: (context) => Accueil(prefs: _prefs,)
         )
     );
+  }
+  else{
+    finished = true;
+    setState(() {});
   }
   setState(() {
   });
@@ -94,14 +105,39 @@ _obtenirPrefs() async{
       body: OrientationBuilder(
           builder: (context, orientation) {
             if(orientation == Orientation.portrait){
-              return _buildPortraitContainers(nomController: nomController, pwController: pwController, prefs: _prefs,);
+              return finished? _buildPortraitContainers(nomController: nomController, pwController: pwController, prefs: _prefs,) : _loading(finished: finished);
 
             }
             else{
-              return _buildPortraitContainers(nomController: nomController, pwController: pwController, prefs: _prefs,);
-
+              return finished? _buildPortraitContainers(nomController: nomController, pwController: pwController, prefs: _prefs,) : _loading(finished: finished);
             }
           })
+    );
+  }
+}
+
+class _loading extends StatelessWidget{
+  const _loading({
+    super.key,
+    required this.finished
+  });
+
+  final bool finished;
+
+  @override
+  Widget build(BuildContext context){
+    return Center(
+      child: Center(
+        child: Container(
+          height: 30,
+          child: LoadingIndicator(
+            colors: const [Colors.blue],
+            indicatorType: Indicator.ballPulse ,
+            strokeWidth: 3,
+            pause: finished,
+          ),
+        ),
+      ),
     );
   }
 }
@@ -111,13 +147,15 @@ class _buildPortraitContainers extends StatelessWidget {
     super.key,
     required this.nomController,
     required this.pwController,
-     required this.prefs
+     required this.prefs,
+
 
   });
 
   final TextEditingController nomController;
   final TextEditingController pwController;
   final SharedPreferences prefs;
+
 
    void _definirPrefs() {
      prefs.setString('username', nomController.text);
